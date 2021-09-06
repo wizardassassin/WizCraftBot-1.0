@@ -9,6 +9,7 @@ const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
+// Imports commands
 client.commands = new Collection();
 const commandFiles = fs
     .readdirSync("./commands")
@@ -19,6 +20,7 @@ for (const file of commandFiles) {
     client.commands.set(command.data.name, command);
 }
 
+// Imports events
 const eventFiles = fs
     .readdirSync("./events")
     .filter((file) => file.endsWith(".js"));

@@ -1,35 +1,38 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
+import { Collection } from "discord.js";
+import fs from "fs";
 
-export const data = new SlashCommandBuilder()
+const data = new SlashCommandBuilder()
     .setName("api")
-    .setDescription("Makes a call to an API.")
-    .addSubcommand((subcommand) =>
-        subcommand
-            .setName("user")
-            .setDescription("Info about a user")
-            .addUserOption((option) =>
-                option.setName("target").setDescription("The user")
-            )
-    )
-    .addSubcommand((subcommand) =>
-        subcommand.setName("server").setDescription("Info about the server")
-    );
-export async function execute(interaction) {
-    if (interaction.options.getSubcommand() === "user") {
-        const user = interaction.options.getUser("target");
+    .setDescription("Makes a call to an API.");
 
-        if (user) {
-            await interaction.reply(
-                `Username: ${user.username}\nID: ${user.id}`
-            );
-        } else {
-            await interaction.reply(
-                `Your username: ${interaction.user.username}\nYour ID: ${interaction.user.id}`
-            );
-        }
-    } else if (interaction.options.getSubcommand() === "server") {
-        await interaction.reply(
-            `Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`
-        );
+const apis = new Collection();
+
+// Imports api subcommands
+const apiFiles = fs
+    .readdirSync("./commands/apis") // Why can't ."/" be universal? // relates to the directory the program was called on
+    .filter((file) => file.endsWith(".js"));
+
+for (const file of apiFiles) {
+    const api = await import(`./apis/${file}`); // Why can't ."/" be universal? // relates to the directory the file is in
+    apis.set(api.deploy.name, api);
+    data.addSubcommand(api.deploy); // Revelation!! You can just pass in a SlashCommandSubcommandBuilder instead of a function
+}
+
+export { data };
+export async function execute(interaction) {
+    const apiCommandName = interaction.options.getSubcommand();
+    const apiCommand = apis.get(apiCommandName);
+
+    if (!apiCommand) return;
+
+    try {
+        apiCommand.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        await interaction.reply({
+            content: "There was an error while executing this API!",
+            ephemeral: true,
+        });
     }
 }
