@@ -7,13 +7,17 @@ const guildId = process.env.GUILD_ID_WIZCRAFTBOT_V1;
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
 
 const commands = [];
-const commandFiles = fs
+const commandsFolders = fs
     .readdirSync("./commands")
-    .filter((file) => file.endsWith(".js"));
-
-for (const file of commandFiles) {
-    const command = await import(`./commands/${file}`);
-    commands.push(command.data.toJSON());
+    .filter((folder) => fs.lstatSync(`./commands/${folder}`).isDirectory());
+for (const folder of commandsFolders) {
+    const commandFiles = fs
+        .readdirSync(`./commands/${folder}`)
+        .filter((file) => file.endsWith(".js"));
+    for (const file of commandFiles) {
+        const command = await import(`./commands/${folder}/${file}`);
+        commands.push(command.data.toJSON());
+    }
 }
 
 const rest = new REST({ version: "9" }).setToken(token);
