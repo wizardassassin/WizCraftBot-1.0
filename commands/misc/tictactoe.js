@@ -17,5 +17,12 @@ export const data = new SlashCommandBuilder()
             .addChoice("impossible", "impossible")
     );
 export async function execute(interaction) {
+    const opponent = interaction.options.getUser("opponent") || ""; // Should I really call the user object for the bot?
+    const difficulty = interaction.options.getString("difficulty") || "medium";
+    if (!opponent || opponent.bot) {
+        // If the opponent doesn't exist or is a bot
+        // Defaults to the bot
+        
+    }
     await interaction.reply("reply");
 }

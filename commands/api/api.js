@@ -1,6 +1,8 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Collection } from "discord.js";
 import fs from "fs";
+import { dirname } from 'path';
+import { fileURLToPath } from "url";
 
 const data = new SlashCommandBuilder()
     .setName("api")
@@ -10,7 +12,7 @@ const apis = new Collection();
 
 // Imports api subcommands
 const apiFiles = fs
-    .readdirSync("./commands/apis") // Why can't ."/" be universal? // relates to the directory the program was called on
+    .readdirSync(dirname(fileURLToPath(import.meta.url)) + "/apis") // Why can't ."/" be universal? // relates to the directory the program was called on
     .filter((file) => file.endsWith(".js"));
 
 for (const file of apiFiles) {
