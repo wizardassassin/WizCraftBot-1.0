@@ -8,6 +8,9 @@ import fs from "fs";
 import { Client, Collection, Intents } from "discord.js";
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
 
+// Spent a couple hours debugging .AwaitMessages()
+// and cached voice states,
+// not realizing that I needed to add intents
 const client = new Client({
     intents: [
         Intents.FLAGS.GUILDS,
