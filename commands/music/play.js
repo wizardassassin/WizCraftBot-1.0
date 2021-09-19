@@ -1,7 +1,8 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Permissions, Collection } from "discord.js";
+import { Permissions, Collection, Formatters, Util } from "discord.js";
 import ytdl from "ytdl-core";
-import yts from "yt-search";
+import ytpl from "ytpl";
+import ytsr from "ytsr";
 import {
     AudioPlayerStatus,
     StreamType,
@@ -11,6 +12,8 @@ import {
 } from "@discordjs/voice";
 
 const queue = new Collection();
+
+const tempQueue = [];
 
 export const data = new SlashCommandBuilder()
     .setName("play")
@@ -38,48 +41,81 @@ export async function execute(interaction) {
         return;
     }
 
+    // Playlist? Video? Query?
     const unparsedSearch = interaction.options.getString("search");
 
     const songInfo = { title: "", url: "", thumbnail: "", duration: "" };
 
     // gets the content needed to play the video
     // Video used as a guide: https://www.youtube.com/watch?v=riyHsgI2IDs
-    // TODO: convert all queries to only use yts and download from just ytdl
-    /*
-    videoId = new URL("video-link").searchParams.get("v")
-    video = await yts( { videoId: 'video-id' } )
-    list = await yts( { listId: 'playlist-id' } )
-    list.videos.forEach((video) => {})
-    */
-    let info;
-    if (ytdl.validateURL(unparsedSearch)) {
-        // If the search is a youtube video URL
-        const video = await ytdl.getInfo(unparsedSearch);
-        info = video;
-        const seconds = video.videoDetails.lengthSeconds;
-        const url = new URL(video.videoDetails.thumbnails[0].url);
-        songInfo.title = video.videoDetails.title;
-        songInfo.thumbnail = url.origin + url.pathname;
-        songInfo.url = video.videoDetails.video_url;
-        songInfo.duration =
-            seconds < 3600
-                ? new Date(seconds * 1000).toISOString().substr(14, 5)
-                : new Date(seconds * 1000).toISOString().substr(11, 8);
+    // Use ytdl ytsr ytpl
+    // no longer using yts
+    // ytdl.validateURL(unparsedSearch)
+
+    let guildQueue;
+
+    const isPlaylist = ytpl.validateID(unparsedSearch);
+
+    if (isPlaylist) {
+        const playlist = await ytpl(unparsedSearch);
+        const videoInfos = playlist.items.map((item) => {
+            const {
+                title,
+                shortUrl: url,
+                author: { url: channelUrl, name: channel },
+                bestThumbnail: { url: thumbnail },
+                duration,
+            } = item;
+            return {
+                title,
+                url,
+                thumbnail,
+                duration,
+                channel,
+                channelUrl,
+            };
+        });
+        tempQueue.push(...videoInfos);
     } else {
-        // If it isn't, treat the string as a query
-        const videoResults = await yts(unparsedSearch);
-        const video = videoResults.videos[0];
-        if (!video) {
-            // If the video is not found even with searching
-            await interaction.reply("The video could not be found.");
+        const isUrl = ytdl.validateURL(unparsedSearch);
+        const searchResults = await ytsr(
+            isUrl
+                ? unparsedSearch
+                : (await ytsr.getFilters(unparsedSearch))
+                      .get("Type")
+                      .get("Video").url,
+            {
+                limit: 1,
+            }
+        );
+        if (searchResults.items.length <= 0) {
             return;
         }
-        songInfo.title = video.title;
-        songInfo.url = video.url;
-        songInfo.thumbnail = video.thumbnail;
-        songInfo.duration = video.timestamp;
+        const {
+            title,
+            url,
+            bestThumbnail: { url: thumbnail },
+            author: { url: channelUrl, name: channel },
+            duration,
+        } = searchResults.items[0];
+        const videoInfo = {
+            title,
+            url,
+            thumbnail,
+            duration,
+            channel,
+            channelUrl,
+        };
+        tempQueue.push(videoInfo);
     }
-    console.log(songInfo);
+
+    // const reply = Util.splitMessage(JSON.stringify(tempQueue, null, 4), {
+    //     maxLength: 1985,
+    // }).map((message) => Formatters.codeBlock("json", message));
+
+    // await interaction.reply(reply.shift());
+    // reply.forEach(async (message) => await interaction.followUp(message));
+    // return;
     //
     const { guild } = interaction;
     const connection = joinVoiceChannel({
@@ -101,11 +137,11 @@ export async function execute(interaction) {
             return false;
         },
         quality: "highestaudio",
+        highWaterMark: 1 << 21, // solution?
+        dlChunkSize: 1 << 26, // solution?
     };
 
-    const stream = info
-        ? ytdl.downloadFromInfo(info, formatOptions)
-        : ytdl(songInfo.url, formatOptions);
+    const stream = ytdl(tempQueue[0].url, formatOptions);
     const resource = createAudioResource(stream, {
         inputType: StreamType.Arbitrary,
         // inlineVolume: true,
@@ -119,8 +155,11 @@ export async function execute(interaction) {
     connection.subscribe(player);
 
     player.on(AudioPlayerStatus.Idle, () => connection.destroy());
-    
+
+    const trim = (str, max) =>
+        str.length > max ? `${str.slice(0, max - 3)}...` : str;
+
     await interaction.reply(
-        "```json\n" + JSON.stringify(songInfo, null, 4) + "```"
+        "```json\n" + trim(JSON.stringify(tempQueue, null, 4), 1989) + "```"
     );
 }
