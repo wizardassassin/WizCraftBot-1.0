@@ -35,7 +35,6 @@ export async function execute(interaction) {
     }
 
     const voiceChannel = interaction.member.voice.channel;
-
     if (!voiceChannel) {
         await interaction.reply("You need to be in a voice channel.");
         return;
@@ -43,8 +42,6 @@ export async function execute(interaction) {
 
     // Playlist? Video? Query?
     const unparsedSearch = interaction.options.getString("search");
-
-    const songInfo = { title: "", url: "", thumbnail: "", duration: "" };
 
     // gets the content needed to play the video
     // Video used as a guide: https://www.youtube.com/watch?v=riyHsgI2IDs
@@ -55,7 +52,6 @@ export async function execute(interaction) {
     let guildQueue;
 
     const isPlaylist = ytpl.validateID(unparsedSearch);
-
     if (isPlaylist) {
         const playlist = await ytpl(unparsedSearch);
         const videoInfos = playlist.items.map((item) => {
@@ -89,6 +85,7 @@ export async function execute(interaction) {
             }
         );
         if (searchResults.items.length <= 0) {
+            await interaction.reply("The video could not be found.");
             return;
         }
         const {
@@ -109,14 +106,6 @@ export async function execute(interaction) {
         tempQueue.push(videoInfo);
     }
 
-    // const reply = Util.splitMessage(JSON.stringify(tempQueue, null, 4), {
-    //     maxLength: 1985,
-    // }).map((message) => Formatters.codeBlock("json", message));
-
-    // await interaction.reply(reply.shift());
-    // reply.forEach(async (message) => await interaction.followUp(message));
-    // return;
-    //
     const { guild } = interaction;
     const connection = joinVoiceChannel({
         channelId: voiceChannel.id,
@@ -124,24 +113,24 @@ export async function execute(interaction) {
         adapterCreator: guild.voiceAdapterCreator,
     });
 
-    const maxAudioBitrate = voiceChannel.bitrate / 1000; // kps
+    const maxAudioBitrate = voiceChannel.bitrate / 1000; // kbps
 
     // ECONNRESET ??
     // AudioOnly files are not playing friendly
     const formatOptions = {
-        filter: (format) => {
-            if (format.hasAudio && format.audioBitrate <= maxAudioBitrate) {
-                console.log(format.audioBitrate, format.hasVideo);
-                return true;
-            }
-            return false;
-        },
+        filter: "audioonly",
         quality: "highestaudio",
-        highWaterMark: 1 << 21, // solution?
-        dlChunkSize: 1 << 26, // solution?
+        highWaterMark: 1 << 25, // solution?
+        dlChunkSize: 1 << 30, // solution?
     };
 
-    const stream = ytdl(tempQueue[0].url, formatOptions);
+    console.log(tempQueue[0]);
+    const stream = ytdl(tempQueue[0].url, formatOptions).on(
+        "progress",
+        (length, downloaded, totallength) => {
+            console.log({ length, downloaded, totallength }); // is logging
+        }
+    );
     const resource = createAudioResource(stream, {
         inputType: StreamType.Arbitrary,
         // inlineVolume: true,
@@ -151,15 +140,36 @@ export async function execute(interaction) {
     // console.log(resource.volume.volume);
     const player = createAudioPlayer();
 
-    player.play(resource);
     connection.subscribe(player);
+    player.play(resource);
 
-    player.on(AudioPlayerStatus.Idle, () => connection.destroy());
+    player.on("error", (error) => {
+        console.error(error);
+    });
+
+    player.on(AudioPlayerStatus.Idle, () => {
+        tempQueue.shift();
+        if (tempQueue.length <= 0) return connection.destroy();
+        console.log(tempQueue[0]);
+        const stream = ytdl(tempQueue[0].url, formatOptions).on(
+            "progress",
+            (length, downloaded, totallength) => {
+                console.log({ length, downloaded, totallength }); // is logging
+            }
+        );
+        const resource = createAudioResource(stream, {
+            inputType: StreamType.Arbitrary,
+        });
+        player.play(resource);
+    });
 
     const trim = (str, max) =>
         str.length > max ? `${str.slice(0, max - 3)}...` : str;
 
-    await interaction.reply(
-        "```json\n" + trim(JSON.stringify(tempQueue, null, 4), 1989) + "```"
-    );
+    const reply = Util.splitMessage(JSON.stringify(tempQueue, null, 4), {
+        maxLength: 1985,
+    }).map((message) => Formatters.codeBlock("json", message));
+
+    await interaction.reply(reply.shift());
+    // reply.forEach(async (message) => await interaction.channel.send(message));
 }
