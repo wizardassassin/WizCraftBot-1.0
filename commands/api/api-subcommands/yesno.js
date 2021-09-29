@@ -3,24 +3,14 @@ import { MessageEmbed } from "discord.js";
 import { performance } from "perf_hooks";
 import fetch from "node-fetch";
 
-export const deploy = new SlashCommandSubcommandBuilder()
-    .setName("animechan")
-    .setDescription("Calls the AnimeChan API.")
-    .addStringOption((option) =>
-        option
-            .setName("search")
-            .setDescription("Search Type. Not Currently Functional.")
-            .addChoice("random", "random2")
-            .addChoice("title", "title2")
-            .addChoice("name", "name2")
-            .addChoice("query", "query2")
-    );
+export const data = new SlashCommandSubcommandBuilder()
+    .setName("yesno")
+    .setDescription("Calls the Yes No API.");
 
 export async function execute(interaction) {
     await interaction.deferReply();
-
     const startTime = performance.now();
-    const res = await fetch("https://animechan.vercel.app/api/random");
+    const res = await fetch("https://yesno.wtf/api");
     const endTime = performance.now();
     const json = await res.json();
     const time = endTime - startTime;
@@ -37,12 +27,13 @@ export async function execute(interaction) {
     const url = `https://cdn.discordapp.com/emojis/${icon}.png`;
 
     let embed = new MessageEmbed()
-        .setTitle("AnimeChan API")
-        .setURL("https://github.com/RocktimSaikia/anime-chan")
-        .addField("Anime", String(json.anime))
-        .addField("Character", String(json.character))
-        .addField("Quote", String(json.quote))
-        .addField("Response Time", String(time.toFixed(4)) + "ms")
+        .setTitle("Yes No API")
+        .setURL("https://yesno.wtf/")
+        .addField("Answer", String(json.answer))
+        .addField(
+            "Response Time",
+            String((endTime - startTime).toFixed(4)) + "ms"
+        )
         .setColor(0xf1c40f)
         .setImage(json.image)
         .setTimestamp()

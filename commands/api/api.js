@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Collection } from "discord.js";
 import fs from "fs";
-import { dirname } from 'path';
+import { dirname } from "path";
 import { fileURLToPath } from "url";
 
 const data = new SlashCommandBuilder()
@@ -12,13 +12,13 @@ const apis = new Collection();
 
 // Imports api subcommands
 const apiFiles = fs
-    .readdirSync(dirname(fileURLToPath(import.meta.url)) + "/apis") // Why can't ."/" be universal? // relates to the directory the program was called on
+    .readdirSync(dirname(fileURLToPath(import.meta.url)) + "/api-subcommands") // Why can't ."/" be universal? // relates to the directory the program was called on
     .filter((file) => file.endsWith(".js"));
 
 for (const file of apiFiles) {
-    const api = await import(`./apis/${file}`); // Why can't ."/" be universal? // relates to the directory the file is in
-    apis.set(api.deploy.name, api);
-    data.addSubcommand(api.deploy); // Revelation!! You can just pass in a SlashCommandSubcommandBuilder instead of a function
+    const api = await import(`./api-subcommands/${file}`); // Why can't ."/" be universal? // relates to the directory the file is in
+    apis.set(api.data.name, api);
+    data.addSubcommand(api.data); // Revelation!! You can just pass in a SlashCommandSubcommandBuilder instead of a function
 }
 
 export { data };
