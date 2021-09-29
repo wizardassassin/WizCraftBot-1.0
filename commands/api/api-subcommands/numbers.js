@@ -3,7 +3,7 @@ import { MessageEmbed } from "discord.js";
 import { performance } from "perf_hooks";
 import fetch from "node-fetch";
 
-export const deploy = new SlashCommandSubcommandBuilder()
+export const data = new SlashCommandSubcommandBuilder()
     .setName("numbers")
     .setDescription("Calls the Numbers API.")
     .addStringOption((option) =>
