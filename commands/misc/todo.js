@@ -22,6 +22,7 @@ export async function execute(interaction) {
 const list = [
     "99% embed only replies.",
     "Remove command for the music bot.",
+    "Pages for the queue command.",
     "More refined code.",
     "History api command.",
     "College acceptance command.",

@@ -10,5 +10,7 @@ export async function execute(interaction) {
     /**@type {AudioPlayer} */
     const player = interaction.queue.player;
     player.stop();
-    await interaction.reply(`Skipped "${interaction.queue.songs[0].title}"`);
+    await interaction.editReply(
+        `Skipped "${interaction.queue.songs[0].title}"`
+    );
 }

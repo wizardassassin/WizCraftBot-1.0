@@ -34,12 +34,15 @@ for (const file of musicFiles) {
 export { data };
 
 export async function execute(interaction) {
+    await interaction.deferReply();
     if (
         !interaction.member.permissions.has(Permissions.FLAGS.CONNECT) ||
         !interaction.member.permissions.has(Permissions.FLAGS.SPEAK)
     ) {
         // If they don't have the required permissions
-        await interaction.reply("You do not have the required permissions.");
+        await interaction.editReply(
+            "You do not have the required permissions."
+        );
         return;
     }
     const id = interaction.guild.id;
@@ -47,24 +50,25 @@ export async function execute(interaction) {
     const musicCommandName = interaction.options.getSubcommand();
     if (!hasQueue) {
         if (musicCommandName != "play") {
-            await interaction.reply(
+            await interaction.editReply(
                 "There is not a currently active music instance."
             );
             return;
         }
         if (!interaction.member.voice.channel) {
-            await interaction.reply("You need to be in a voice channel.");
+            await interaction.editReply("You need to be in a voice channel.");
             return;
         }
         const firstSongs = await commands.get("play").execute(interaction);
         // console.log(firstSongs);
         // const trim = (str, max) =>
         //     str.length > max ? `${str.slice(0, max - 3)}...` : str;
-        // await interaction.reply(
+        // await interaction.editReply(
         //     "```json\n" +
         //         trim(JSON.stringify(firstSongs, null, 4), 1985) +
         //         "```"
         // );
+        if (!firstSongs) return;
         const queue = createQueue(interaction, firstSongs);
         guildQueue.set(id, queue);
         return;
@@ -79,7 +83,7 @@ export async function execute(interaction) {
         musicCommand.execute(interaction);
     } catch (error) {
         console.error(error);
-        await interaction.reply({
+        await interaction.editReply({
             content: "There was an error while executing this music command!",
             ephemeral: true,
         });
@@ -121,51 +125,57 @@ function createQueue(interaction, firstSongs) {
 
     const songs = [...firstSongs];
 
+    const textChannel = interaction.channel;
+
+    const queue = {
+        voiceChannel,
+        guild,
+        textChannel,
+        connection,
+        player,
+        songs,
+    };
+
     connection.subscribe(player);
 
     player.on("error", (error) => {
         console.error(error);
     });
 
-    const playNextSong = () => {
-        if (songs.length == 0) {
-            guildQueue.delete(guild.id);
-            connection.destroy();
-            return;
-        }
-        console.log(songs[0]);
-        let delay;
-        const stream = ytdl(songs[0].url, formatOptions).on(
-            "progress",
-            (length, downloaded, totallength) => {
-                clearTimeout(delay);
-                delay = setTimeout(() => {
-                    console.log({ length, downloaded, totallength });
-                }, 1500);
-            }
-        );
-        const resource = createAudioResource(stream, {
-            inputType: StreamType.Arbitrary,
-            // inlineVolume: true,
-        });
-        // console.log(resource.volume.volume);
-        // resource.volume.setVolume(1);
-        // console.log(resource.volume.volume);
-        player.play(resource);
-    };
-
-    playNextSong();
+    playNextSong(queue);
 
     player.on(AudioPlayerStatus.Idle, () => {
         songs.shift();
-        playNextSong();
+        playNextSong(queue);
     });
 
-    return {
-        channelId: voiceChannel.id,
-        guildId: guild.id,
-        connection,
-        player,
-        songs,
-    };
+    return queue;
+}
+
+function playNextSong(queue) {
+    const { guild, connection, player, songs } = queue;
+    if (songs.length == 0) {
+        guildQueue.delete(guild.id);
+        connection.destroy();
+        return;
+    }
+    console.log(songs[0]);
+    let delay;
+    const stream = ytdl(songs[0].url, formatOptions).on(
+        "progress",
+        (length, downloaded, totallength) => {
+            clearTimeout(delay);
+            delay = setTimeout(() => {
+                console.log({ length, downloaded, totallength });
+            }, 2000);
+        }
+    );
+    const resource = createAudioResource(stream, {
+        inputType: StreamType.Arbitrary,
+        // inlineVolume: true,
+    });
+    // console.log(resource.volume.volume);
+    // resource.volume.setVolume(1);
+    // console.log(resource.volume.volume);
+    player.play(resource);
 }
