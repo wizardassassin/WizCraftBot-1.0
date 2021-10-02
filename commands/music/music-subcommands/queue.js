@@ -20,7 +20,11 @@ export async function execute(interaction) {
             "Now Playing:",
             `[${currentSong.title}](${currentSong.url}) | \`${currentSong.duration} Requested by: ${currentSong.nickname} (${currentSong.tag})\``
         )
-        .addField(
+        .setTimestamp()
+        .setFooter("Have a nice day!");
+
+    if (nextSongs.length) {
+        embed.addField(
             "Up Next:",
             nextSongs
                 .reduce(
@@ -32,22 +36,23 @@ export async function execute(interaction) {
                     ""
                 )
                 .trim()
-        )
-        .addField(
-            "\u200B",
-            nextSongs2
-                .reduce(
-                    (acc, cur, i) =>
-                        acc +
-                        `\`${i + 6}.\` [${cur.title}](${cur.url}) | \`${
-                            cur.duration
-                        } Requested by: ${cur.nickname} (${cur.tag})\`\n\n`,
-                    ""
-                )
-                .trim()
-        )
-        .setTimestamp()
-        .setFooter("Have a nice day!");
+        );
+        if (nextSongs2.length) {
+            embed.addField(
+                "\u200B",
+                nextSongs2
+                    .reduce(
+                        (acc, cur, i) =>
+                            acc +
+                            `\`${i + 6}.\` [${cur.title}](${cur.url}) | \`${
+                                cur.duration
+                            } Requested by: ${cur.nickname} (${cur.tag})\`\n\n`,
+                        ""
+                    )
+                    .trim()
+            );
+        }
+    }
 
-    await interaction.reply({ embeds: [embed] });
+    await interaction.editReply({ embeds: [embed] });
 }

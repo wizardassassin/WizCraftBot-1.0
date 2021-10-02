@@ -54,7 +54,7 @@ export async function execute(interaction) {
         const isUrl = ytdl.validateURL(unparsedSearch);
         const searchResults = await ytsr(
             isUrl
-                ? unparsedSearch
+                ? ytdl.getURLVideoID(unparsedSearch)
                 : (await ytsr.getFilters(unparsedSearch))
                       .get("Type")
                       .get("Video").url,
@@ -63,7 +63,7 @@ export async function execute(interaction) {
             }
         );
         if (searchResults.items.length <= 0) {
-            await interaction.reply("The video could not be found.");
+            await interaction.editReply("The video could not be found.");
             return;
         }
         const {
@@ -87,10 +87,13 @@ export async function execute(interaction) {
     }
 
     if (tempQueue.length > 1)
-        await interaction.reply(
+        await interaction.editReply(
             `Added ${tempQueue.length} songs to the queue.`
         );
-    else await interaction.reply(`Added "${tempQueue[0].title}" to the queue.`);
+    else
+        await interaction.editReply(
+            `Added "${tempQueue[0].title}" to the queue.`
+        );
 
     if (!interaction.queue) return tempQueue;
 
