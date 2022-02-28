@@ -21,7 +21,7 @@ export async function execute(interaction) {
             `[${currentSong.title}](${currentSong.url}) | \`${currentSong.duration} Requested by: ${currentSong.nickname} (${currentSong.tag})\``
         )
         .setTimestamp()
-        .setFooter("Have a nice day!");
+        .setFooter({ text: "Have a nice day!" });
 
     if (nextSongs.length) {
         embed.addField(

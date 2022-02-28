@@ -84,6 +84,6 @@ function createEmbed(question) {
         .setColor(0xf1c40f)
         .setThumbnail(url)
         .setTimestamp()
-        .setFooter("Have a nice day!");
+        .setFooter({ text: "Have a nice day!", iconURL: url });
     return embed;
 }

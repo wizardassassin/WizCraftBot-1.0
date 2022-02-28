@@ -3,7 +3,7 @@ Relearning on how to create a discord bot
 I can use slash commands now yay
 Following: https://discordjs.guide/
 */
-import "./deploy-commands.js"; // dev
+// import "./deploy-commands.js"; // dev
 import fs from "fs";
 import { Client, Collection, Intents } from "discord.js";
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;

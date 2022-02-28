@@ -48,6 +48,7 @@ export async function execute(interaction) {
     const id = interaction.guild.id;
     const hasQueue = guildQueue.has(id);
     const musicCommandName = interaction.options.getSubcommand();
+    // Creates the queue
     if (!hasQueue) {
         if (musicCommandName != "play") {
             await interaction.editReply(
@@ -134,6 +135,9 @@ function createQueue(interaction, firstSongs) {
         connection,
         player,
         songs,
+        repeatSong: false,
+        loopQueue: false,
+        forceSkip: false,
     };
 
     connection.subscribe(player);
@@ -145,31 +149,43 @@ function createQueue(interaction, firstSongs) {
     playNextSong(queue);
 
     player.on(AudioPlayerStatus.Idle, () => {
-        songs.shift();
+        modifyCurrentSong(queue);
         playNextSong(queue);
     });
 
     return queue;
 }
 
+function modifyCurrentSong(queue) {
+    const { songs, repeatSong, loopQueue, forceSkip } = queue;
+
+    const song = songs.shift();
+    if (repeatSong && !forceSkip) {
+        songs.unshift(song);
+    } else if (loopQueue) {
+        songs.push(song);
+    }
+}
+
 function playNextSong(queue) {
     const { guild, connection, player, songs } = queue;
+
+    // Deleting the queue
     if (songs.length == 0) {
         guildQueue.delete(guild.id);
         connection.destroy();
         return;
     }
     console.log(songs[0]);
+    // It sometimes doesn't work if the song length is too long
     let delay;
-    const stream = ytdl(songs[0].url, formatOptions).on(
-        "progress",
-        (length, downloaded, totallength) => {
-            clearTimeout(delay);
-            delay = setTimeout(() => {
-                console.log({ length, downloaded, totallength });
-            }, 2000);
-        }
-    );
+    const stream = ytdl(songs[0].url, formatOptions);
+    stream.on("progress", (length, downloaded, totallength) => {
+        clearTimeout(delay);
+        delay = setTimeout(() => {
+            console.log({ length, downloaded, totallength });
+        }, 2000);
+    });
     const resource = createAudioResource(stream, {
         inputType: StreamType.Arbitrary,
         // inlineVolume: true,

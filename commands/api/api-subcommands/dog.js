@@ -4,14 +4,14 @@ import { performance } from "perf_hooks";
 import fetch from "node-fetch";
 
 export const data = new SlashCommandSubcommandBuilder()
-    .setName("name")
-    .setDescription("Calls the name API.");
+    .setName("dog")
+    .setDescription("Calls the Dog API.");
 
 export async function execute(interaction) {
     await interaction.deferReply();
 
     const startTime = performance.now();
-    const res = await fetch("https://yesno.wtf/api");
+    const res = await fetch("https://dog.ceo/api/breeds/image/random");
     const endTime = performance.now();
     const json = await res.json();
     const time = endTime - startTime;
@@ -28,13 +28,12 @@ export async function execute(interaction) {
     const url = `https://cdn.discordapp.com/emojis/${icon}.png`;
 
     let embed = new MessageEmbed()
-        .setTitle("name API")
-        .setURL("https://www.google.com/")
-        .addField("Answer", String(json.answer))
+        .setTitle("Dog API")
+        .setURL("https://dog.ceo/dog-api/")
         .addField("Response Time", String(time.toFixed(4)) + "ms")
         .setColor(0xf1c40f)
-        .setImage(json.image)
+        .setImage(json.message)
         .setTimestamp()
-        .setFooter("Have a nice day!", url);
+        .setFooter({ text: "Have a nice day!", iconURL: url });
     await interaction.editReply({ embeds: [embed] });
 }

@@ -15,15 +15,19 @@ export async function execute(interaction) {
                 .trim() || "Nothing to do... Strange..."
         )
         .setTimestamp()
-        .setFooter("Have a nice day!");
+        .setFooter({ text: "Have a nice day!" });
     await interaction.reply({ embeds: [embed] });
 }
 
 const list = [
+    "Comments and JSDocs",
     "99% embed only replies.",
-    "Remove command for the music bot.",
     "Pages for the queue command.",
+    "More refined music bot logic.",
+    "Option for looping the music queue x times.",
     "More refined code.",
     "History api command.",
+    "Adding the ability to input options for the api.",
     "College acceptance command.",
+    "Chess command.",
 ];
