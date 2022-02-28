@@ -37,6 +37,6 @@ export async function execute(interaction) {
         .setColor(0xf1c40f)
         .setImage(json.image)
         .setTimestamp()
-        .setFooter("Have a nice day!", url);
+        .setFooter({ text: "Have a nice day!", iconURL: url });
     await interaction.editReply({ embeds: [embed] });
 }

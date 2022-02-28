@@ -72,6 +72,6 @@ export async function execute(interaction) {
         .addField("Response Time", String(time.toFixed(4)) + "ms")
         .setColor(0xf1c40f)
         .setTimestamp()
-        .setFooter("Have a nice day!", url);
+        .setFooter({ text: "Have a nice day!", iconURL: url });
     await interaction.editReply({ embeds: [embed] });
 }

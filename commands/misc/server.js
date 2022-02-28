@@ -17,7 +17,7 @@ export async function execute(interaction) {
         .setColor(0xf1c40f)
         .setThumbnail(interaction.guild.iconURL())
         .setTimestamp()
-        .setFooter("Have a nice day!");
+        .setFooter({ text: "Have a nice day!" });
     await interaction.reply({ embeds: [embed] });
     // `>>> **Server name:** ${interaction.guild.name}\n**Total members:** ${interaction.guild.memberCount}`
 }

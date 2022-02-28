@@ -20,9 +20,9 @@ export async function execute(interaction) {
     const songLength = songs.length;
     const index = interaction.options.getInteger("position");
     if (index <= 0 || index > songLength - 1) {
-        await interaction.editReply("The position does not exist.");
+        await interaction.editReply("That position does not exist.");
         return;
     }
     const removed = songs.splice(index, 1);
-    await interaction.editReply("Removed " + removed[0].title);
+    await interaction.editReply(`Removed "${removed[0].title}"`);
 }

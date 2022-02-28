@@ -4,16 +4,14 @@ import { performance } from "perf_hooks";
 import fetch from "node-fetch";
 
 export const data = new SlashCommandSubcommandBuilder()
-    .setName("insult")
-    .setDescription("Calls the Evil Insult Generator API.");
+    .setName("cat")
+    .setDescription("Calls the CATAAS(cat as a service) API.");
 
 export async function execute(interaction) {
     await interaction.deferReply();
 
     const startTime = performance.now();
-    const res = await fetch(
-        "https://evilinsult.com/generate_insult.php?lang=en&type=json"
-    );
+    const res = await fetch("https://cataas.com/cat?json=true");
     const endTime = performance.now();
     const json = await res.json();
     const time = endTime - startTime;
@@ -30,13 +28,11 @@ export async function execute(interaction) {
     const url = `https://cdn.discordapp.com/emojis/${icon}.png`;
 
     let embed = new MessageEmbed()
-        .setTitle("Evil Insult Generator API")
-        .setURL("https://evilinsult.com/api/")
-        .addField("Insult", String(json.insult))
-        .addField("Number", String(json.number))
+        .setTitle("CATAAS API")
+        .setURL("https://cataas.com/")
         .addField("Response Time", String(time.toFixed(4)) + "ms")
         .setColor(0xf1c40f)
-        .setImage(json.image)
+        .setImage("https://cataas.com/" + json.url)
         .setTimestamp()
         .setFooter({ text: "Have a nice day!", iconURL: url });
     await interaction.editReply({ embeds: [embed] });

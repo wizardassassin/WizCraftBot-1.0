@@ -54,7 +54,7 @@ export async function execute(interaction) {
         const isUrl = ytdl.validateURL(unparsedSearch);
         const searchResults = await ytsr(
             isUrl
-                ? ytdl.getURLVideoID(unparsedSearch)
+                ? unparsedSearch
                 : (await ytsr.getFilters(unparsedSearch))
                       .get("Type")
                       .get("Video").url,

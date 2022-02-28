@@ -19,7 +19,7 @@ export async function execute(interaction) {
         .setColor(0xf1c40f)
         .setThumbnail(user.displayAvatarURL())
         .setTimestamp()
-        .setFooter("Have a nice day!");
+        .setFooter({ text: "Have a nice day!" });
     await interaction.reply({ embeds: [embed] });
     // `>>> **Your tag:** ${interaction.user.tag}\n**Your id:** ${interaction.user.id}`
 }
