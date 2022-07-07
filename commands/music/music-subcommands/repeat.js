@@ -21,9 +21,12 @@ export const data = new SlashCommandSubcommandBuilder()
             .addChoice("false", "false")
             .addChoice("toggle", "toggle")
     );
+
 /**
- *
+ * 
+ * 
  * @param {CommandInteraction} interaction
+ * 
  */
 export async function execute(interaction) {
     const scope = interaction.options.getString("scope") ?? "song";

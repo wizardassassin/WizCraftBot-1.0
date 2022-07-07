@@ -16,12 +16,15 @@ export const data = new SlashCommandSubcommandBuilder()
  */
 export async function execute(interaction) {
     const { queue } = interaction;
-    const { songs } = queue;
+    const { songs, player } = queue;
     const songLength = songs.length;
     const index = interaction.options.getInteger("position");
-    if (index <= 0 || index > songLength - 1) {
+    if (index < 0 || index > songLength - 1) {
         await interaction.editReply("That position does not exist.");
         return;
+    }
+    if (index == 0) {
+        player.stop();
     }
     const removed = songs.splice(index, 1);
     await interaction.editReply(`Removed "${removed[0].title}"`);

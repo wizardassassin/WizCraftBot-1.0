@@ -10,7 +10,8 @@ export const data = new SlashCommandSubcommandBuilder()
  */
 export async function execute(interaction) {
     /**@type {Array}*/
-    const songs = interaction.queue.songs;
+    const { queue } = interaction;
+    const songs = queue.songs;
     const currentSong = songs[0];
     const nextSongs = songs.slice(1, 6);
     const nextSongs2 = songs.slice(6, 11);
@@ -35,7 +36,8 @@ export async function execute(interaction) {
                         } Requested by: ${cur.nickname} (${cur.tag})\`\n\n`,
                     ""
                 )
-                .trim()
+                .trim(),
+            false
         );
         if (nextSongs2.length) {
             embed.addField(
@@ -49,10 +51,15 @@ export async function execute(interaction) {
                             } Requested by: ${cur.nickname} (${cur.tag})\`\n\n`,
                         ""
                     )
-                    .trim()
+                    .trim(),
+                false
             );
         }
     }
+    embed.addField(
+        "Settings:",
+        `\`repeatSong:\` **${queue.repeatSong}**\n\`loopQueue:\` **${queue.loopQueue}**`
+    );
 
     await interaction.editReply({ embeds: [embed] });
 }
