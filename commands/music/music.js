@@ -160,7 +160,11 @@ function modifyCurrentSong(queue) {
     const { songs, repeatSong, loopQueue, forceSkip } = queue;
 
     const song = songs.shift();
-    if (repeatSong && !forceSkip) {
+    if (forceSkip) {
+        queue.forceSkip = false;
+        return;
+    }
+    if (repeatSong) {
         songs.unshift(song);
     } else if (loopQueue) {
         songs.push(song);

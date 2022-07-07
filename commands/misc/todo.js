@@ -30,4 +30,5 @@ const list = [
     "Adding the ability to input options for the api.",
     "College acceptance command.",
     "Chess command.",
+    "Add TypeScript.",
 ];
