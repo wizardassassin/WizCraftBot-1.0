@@ -2,7 +2,7 @@ export const name = "interactionCreate";
 export async function execute(interaction) {
     const { client } = interaction;
     console.log(
-        `${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.`
+        `${interaction.user.tag} in #${interaction.channel.name} triggered an interaction [${interaction.commandName}].`
     );
 
     if (!interaction.isCommand()) return;
