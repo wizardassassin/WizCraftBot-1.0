@@ -16,6 +16,15 @@ const data = new SlashCommandSubcommandBuilder()
         option
             .setName("port")
             .setDescription("Port of the minecraft server (defaults to 25565).")
+    )
+    .addStringOption((option) =>
+        option
+            .setName("server")
+            .setDescription("Type of minecraft server (defaults to java).")
+            .addChoices(
+                { name: "java", value: "java" },
+                { name: "bedrock", value: "bedrock" }
+            )
     );
 
 export { data };
@@ -27,14 +36,27 @@ const options = {
     enableSRV: true,
 };
 
+/**
+ *
+ * @param {import("discord.js").CommandInteraction} interaction
+ */
 export async function execute(interaction) {
     await interaction.deferReply();
 
     // TODO: Make sure to parse input
+    // TODO: Add bedrock support
     let ip = interaction.options.getString("ip") || "play.hypixel.net";
     let port = interaction.options.getInteger("port") ?? 25565;
+    let server = interaction.options.getInteger("server") || "java";
 
-    if (port < 0 || port > 65535) {
+    console.log({
+        tag: interaction.user.tag,
+        ip,
+        port,
+        server,
+    });
+
+    if (port <= 0 || port > 65535) {
         port = 25565;
     }
 
@@ -83,7 +105,9 @@ export async function execute(interaction) {
             "Sample Players",
             `${JSON.stringify(
                 (result.players.sample || []).map(({ id, name }) =>
-                    `${name} (${id})`.replace(/§[0-9a-g]/g, "").replace(/https:\/\//g, "https\\://")
+                    `${name} (${id})`
+                        .replace(/§[0-9a-g]/g, "")
+                        .replace(/https:\/\//g, "https\\://")
                 ),
                 null,
                 2
