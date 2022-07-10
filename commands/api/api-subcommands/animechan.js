@@ -10,10 +10,12 @@ export const data = new SlashCommandSubcommandBuilder()
         option
             .setName("search")
             .setDescription("Search Type. Not Currently Functional.")
-            .addChoice("random", "random2")
-            .addChoice("title", "title2")
-            .addChoice("name", "name2")
-            .addChoice("query", "query2")
+            .addChoices(
+                { name: "random", value: "random2" },
+                { name: "title", value: "title2" },
+                { name: "name", value: "name2" },
+                { name: "query", value: "query2" }
+            )
     );
 
 export async function execute(interaction) {

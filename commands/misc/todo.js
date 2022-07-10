@@ -31,4 +31,5 @@ const list = [
     "College acceptance command.",
     "Chess command.",
     "Add TypeScript.",
+    "Add hypixel api integration.",
 ];

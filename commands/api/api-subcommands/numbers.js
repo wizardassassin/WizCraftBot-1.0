@@ -10,10 +10,12 @@ export const data = new SlashCommandSubcommandBuilder()
         option
             .setName("type")
             .setDescription("Type of response. Default: trivia")
-            .addChoice("trivia", "trivia")
-            .addChoice("math", "math")
-            .addChoice("date", "date")
-            .addChoice("year", "year")
+            .addChoices(
+                { name: "trivia", value: "trivia" },
+                { name: "math", value: "math" },
+                { name: "date", value: "date" },
+                { name: "year", value: "year" }
+            )
     )
     .addIntegerOption((option) =>
         option

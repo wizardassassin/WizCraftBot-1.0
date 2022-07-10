@@ -8,8 +8,10 @@ export const data = new SlashCommandSubcommandBuilder()
         option
             .setName("scope")
             .setDescription("The scope of the repeat(default: song).")
-            .addChoice("song", "song")
-            .addChoice("queue", "queue")
+            .addChoices(
+                { name: "song", value: "song" },
+                { name: "queue", value: "queue" }
+            )
     )
     .addStringOption((option) =>
         option
@@ -17,16 +19,18 @@ export const data = new SlashCommandSubcommandBuilder()
             .setDescription(
                 "Whether or not to repeat the song or queue(default: toggle)."
             )
-            .addChoice("true", "true")
-            .addChoice("false", "false")
-            .addChoice("toggle", "toggle")
+            .addChoices(
+                { name: "true", value: "true" },
+                { name: "false", value: "false" },
+                { name: "toggle", value: "toggle" }
+            )
     );
 
 /**
- * 
- * 
+ *
+ *
  * @param {CommandInteraction} interaction
- * 
+ *
  */
 export async function execute(interaction) {
     const scope = interaction.options.getString("scope") ?? "song";
