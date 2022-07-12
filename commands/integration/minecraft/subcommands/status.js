@@ -89,6 +89,7 @@ export async function execute(interaction) {
 
     const embed = new MessageEmbed()
         .setTitle("Minecraft Server Status")
+        .setURL("https://github.com/PassTheMayo/minecraft-server-util") // https://www.npmjs.com/package/minecraft-server-util
         .addField("Server IP", String(ip))
         .addField(
             "Version",
