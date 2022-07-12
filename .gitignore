@@ -108,3 +108,4 @@ dist
 
 # Test files
 .test*
+test/
