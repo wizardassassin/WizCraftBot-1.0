@@ -13,7 +13,7 @@
   "license": "ISC",
   "type": "module",
   "imports": {
-    "#utils/*": "./utils/*"
+    "#utils/*": "./utils/*.js"
   },
   "dependencies": {
     "@discordjs/builders": "^0.15.0",

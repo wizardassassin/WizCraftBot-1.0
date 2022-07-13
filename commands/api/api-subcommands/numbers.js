@@ -1,7 +1,7 @@
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import { MessageEmbed } from "discord.js";
-import { performance } from "perf_hooks";
 import fetch from "node-fetch";
+import { getPingColor, Timer } from "#utils/utils";
 
 export const data = new SlashCommandSubcommandBuilder()
     .setName("numbers")
@@ -39,6 +39,10 @@ export const data = new SlashCommandSubcommandBuilder()
             )
     );
 
+/**
+ *
+ * @param {import("discord.js").CommandInteraction} interaction
+ */
 export async function execute(interaction) {
     await interaction.deferReply();
 
@@ -50,22 +54,14 @@ export async function execute(interaction) {
 
     if (type == "date" && month && day) number = `${month}/${day}`;
 
-    const startTime = performance.now();
+    const timer = new Timer();
+    timer.start();
     const res = await fetch(`http://numbersapi.com/${number}/${type}`);
-    const endTime = performance.now();
     const text = await res.text();
-    const time = endTime - startTime;
+    timer.stop();
+    const time = timer.duration();
 
-    let icon = "";
-    if (time < 500) icon = "884158152973615105";
-    // < 0.5 sec Green Icon
-    else if (time < 1000) icon = "884158153011376208";
-    // < 1 sec Yellow Icon
-    else if (time < 2000) icon = "884158153103638548";
-    // < 2 sec Orange Icon
-    else icon = "884158153044934666";
-    // > 2 sec Red Icon
-    const url = `https://cdn.discordapp.com/emojis/${icon}.png`;
+    const pingColor = getPingColor(time, 2);
 
     let embed = new MessageEmbed()
         .setTitle("Numbers API")
@@ -74,6 +70,6 @@ export async function execute(interaction) {
         .addField("Response Time", String(time.toFixed(4)) + "ms")
         .setColor(0xf1c40f)
         .setTimestamp()
-        .setFooter({ text: "Have a nice day!", iconURL: url });
-    await interaction.editReply({ embeds: [embed] });
+        .setFooter({ text: "Have a nice day!", iconURL: pingColor.url });
+    await interaction.editReply({ embeds: [embed], files: [pingColor.file] });
 }

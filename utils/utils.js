@@ -1,11 +1,18 @@
+import { performance } from "perf_hooks";
+
 export default {};
 
 /**
  *
  * @param {Number} ping - Time in milliseconds
+ * @param {Array<Number> | number} times - Time overrides
  * @returns Attachment Object
  */
-export function getPingColor(ping) {
+export function getPingColor(ping, times) {
+    const replyObj = {
+        url: "attachment://pingColor.png",
+        file: { attachment: "", name: "pingColor.png" },
+    };
     const imageDir = "./images";
     const key = [
         [90, "Green_Square.png"],
@@ -13,15 +20,45 @@ export function getPingColor(ping) {
         [200, "Orange_Square.png"],
         [Infinity, "Red_Square.png"],
     ];
+
+    switch (times) {
+        case 1:
+            overrideArr(key, [250, 500, 1000], 0);
+            break;
+        case 2:
+            overrideArr(key, [500, 1000, 2000], 0);
+            break;
+        default:
+            if (Array.isArray(times)) {
+                overrideArr(key, times, 0);
+            }
+            break;
+    }
+
     for (const [time, file] of key) {
         if (ping < time) {
-            return { attachment: `${imageDir}/${file}`, name: "pingColor.png" };
+            replyObj.file.attachment = `${imageDir}/${file}`;
+            return replyObj;
         }
     }
-    return {
-        attachment: `${imageDir}/${key[key.length - 1][1]}`,
-        name: "pingColor.png",
-    };
+    replyObj.file.attachment = `${imageDir}/${key[key.length - 1][1]}`;
+    return replyObj;
+}
+
+/**
+ *
+ * @param {Array<Array>} arr2D
+ * @param {Array} arr1D
+ * @param {Number} pos
+ */
+function overrideArr(arr2D, arr1D, pos) {
+    if (arr1D.length == 0) {
+        return;
+    }
+    const len = Math.min(arr1D.length, arr2D.length);
+    for (let i = 0; i < len; i++) {
+        arr2D[i][pos] = arr1D[i];
+    }
 }
 
 /**
@@ -38,4 +75,35 @@ export function URLWrapper(base, params) {
     return url;
 }
 
-export function fetchWrapper(url) {}
+export function fetchWrapper(url) {
+    
+}
+
+export class Timer {
+    startTime;
+    stopTime;
+    constructor() {
+        this.startTime = 0;
+        this.stopTime = 0;
+        this.start();
+        this.stop();
+    }
+    start() {
+        this.startTime = performance.now();
+    }
+    stop() {
+        this.stopTime = performance.now();
+    }
+    duration(m) {
+        return this.stopTime - this.startTime;
+    }
+}
+
+/**
+ *
+ * @param {Number} ms
+ * @returns
+ */
+export function sleep(ms) {
+    return new Promise((res) => setTimeout(res, ms));
+}
