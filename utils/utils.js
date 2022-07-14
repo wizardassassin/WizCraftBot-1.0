@@ -1,6 +1,7 @@
 import { performance } from "perf_hooks";
 
-export default {};
+import * as self from "#utils/utils";
+export default self;
 
 /**
  *
