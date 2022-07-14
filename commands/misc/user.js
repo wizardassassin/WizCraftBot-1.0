@@ -7,12 +7,18 @@ export const data = new SlashCommandBuilder()
     .addUserOption((option) =>
         option.setName("user").setDescription("User to get information about.")
     );
+/**
+ *
+ * @param {import("discord.js").CommandInteraction} interaction
+ */
 export async function execute(interaction) {
     let user = interaction.options.getUser("user") || interaction.user;
     let guildMember = await interaction.guild.members.fetch(user.id);
+    // let guildMember = interaction.guild.members.cache.get(user.id);
+    // console.log(interaction.guild.members.cache.size);
     let embed = new MessageEmbed()
         .setTitle("User Information")
-        .addField("Player Name", user.username)
+        .addField("Player Name", guildMember.displayName)
         .addField("Tag", user.tag)
         .addField("Join Date", String(guildMember.joinedAt))
         .addField("Creation Date", String(user.createdAt))

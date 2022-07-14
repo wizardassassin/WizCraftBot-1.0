@@ -10,7 +10,7 @@
     "start": "node deploy-commands.js && pm2 start index.js"
   },
   "author": "wizardassassin",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "imports": {
     "#utils/*": "./utils/*.js"
@@ -27,12 +27,32 @@
     "erlpack": "github:discord/erlpack",
     "ffmpeg-static": "^5.0.2",
     "libsodium-wrappers": "^0.7.10",
-    "minecraft-server-util": "^5.2.10",
-    "node-fetch": "^3.2.6",
+    "minecraft-server-util": "^5.3.0",
+    "node-fetch": "^3.2.8",
     "utf-8-validate": "^5.0.9",
     "ytdl-core": "^4.11.0",
     "ytpl": "^2.3.0",
     "ytsr": "^3.8.0",
     "zlib-sync": "^0.1.7"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wizardassassin/WizCraftBot-1.0.git"
+  },
+  "keywords": [
+    "music",
+    "api",
+    "bot",
+    "minecraft",
+    "node",
+    "discord"
+  ],
+  "bugs": {
+    "url": "https://github.com/wizardassassin/WizCraftBot-1.0/issues"
+  },
+  "homepage": "https://github.com/wizardassassin/WizCraftBot-1.0#readme"
 }

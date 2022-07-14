@@ -1,4 +1,9 @@
 export const name = "interactionCreate";
+
+/**
+ *
+ * @param {import("discord.js").Interaction} interaction
+ */
 export async function execute(interaction) {
     const { client } = interaction;
     console.log(
