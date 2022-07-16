@@ -6,6 +6,7 @@ Following: https://discordjs.guide/
 // import "./deploy-commands.js"; // dev
 import "dotenv/config";
 import fs from "fs";
+import { Low, JSONFile } from "lowdb";
 import { Client, Collection, Intents } from "discord.js";
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
 
@@ -19,6 +20,13 @@ const client = new Client({
         Intents.FLAGS.GUILD_MESSAGES,
     ],
 });
+
+// Imports database
+const adapter = new JSONFile("./database.json");
+const db = new Low(adapter);
+client.database = db;
+await db.read();
+db.data ||= {};
 
 // Imports commands
 client.commands = new Collection();

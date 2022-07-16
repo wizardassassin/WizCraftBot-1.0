@@ -1,7 +1,7 @@
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import { performance } from "perf_hooks";
 import { MessageEmbed } from "discord.js";
-import util from "minecraft-server-util";
+import mcServerStatus from "minecraft-server-util";
 
 const data = new SlashCommandSubcommandBuilder()
     .setName("status")
@@ -63,7 +63,7 @@ export async function execute(interaction) {
     const start = performance.now();
     let result;
     try {
-        result = await util.status(ip, port, options);
+        result = await mcServerStatus.status(ip, port, options);
         // console.log(result);
     } catch (error) {
         console.error(error);

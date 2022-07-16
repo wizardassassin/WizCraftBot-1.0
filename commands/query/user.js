@@ -13,7 +13,8 @@ export const data = new SlashCommandBuilder()
  */
 export async function execute(interaction) {
     let user = interaction.options.getUser("user") || interaction.user;
-    let guildMember = await interaction.guild.members.fetch(user.id);
+    // let guildMember = await interaction.guild.members.fetch(user.id);
+    let guildMember = await interaction.client.users.fetch(user.id);
     // let guildMember = interaction.guild.members.cache.get(user.id);
     // console.log(interaction.guild.members.cache.size);
     let embed = new MessageEmbed()
