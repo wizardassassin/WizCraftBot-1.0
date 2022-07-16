@@ -109,3 +109,6 @@ dist
 # Test files
 .test*
 test/
+
+# Database files
+database.json

@@ -9,8 +9,8 @@ export const data = new SlashCommandBuilder()
  * @param {import("discord.js").CommandInteraction} interaction
  */
 export async function execute(interaction) {
-    let owner = await interaction.guild.members.fetch(interaction.guild.ownerId);
-    // let owner = await interaction.client.users.fetch(interaction.guild.ownerId);
+    // let owner = await interaction.guild.members.fetch(interaction.guild.ownerId);
+    let owner = await interaction.client.users.fetch(interaction.guild.ownerId);
     // let owner = interaction.guild.members.cache.get(interaction.guild.ownerId);
     // console.log(interaction.guild.members.cache.size);
     let embed = new MessageEmbed()

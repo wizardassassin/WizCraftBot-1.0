@@ -1,4 +1,5 @@
 import { performance } from "perf_hooks";
+import fetch from "node-fetch";
 
 import * as self from "#utils/utils";
 export default self;
@@ -76,8 +77,22 @@ export function URLWrapper(base, params) {
     return url;
 }
 
-export function fetchWrapper(url) {
-    
+/**
+ * Kind of useless atm
+ *
+ * @param {import("node-fetch").RequestInfo} urlInit
+ * @param {string} retOpt
+ * @param {import("node-fetch").RequestInit} optionsInit
+ */
+export async function fetchWrapper(urlInit, retOpt, optionsInit) {
+    const url = urlInit;
+    const options = {};
+    for (const key in optionsInit) {
+        options[key] = optionsInit[key];
+    }
+    const res = await fetch(url, options);
+    const val = await res[retOpt](); // Security risk? idk
+    return val;
 }
 
 export class Timer {
@@ -107,4 +122,10 @@ export class Timer {
  */
 export function sleep(ms) {
     return new Promise((res) => setTimeout(res, ms));
+}
+
+export function getIDs(message) {
+    const regexUser = /(?<=<@!?)\d+(?=>)/g;
+    const regexChannel = /(?<=<#)\d+(?=>)/g;
+    const regexRole = /(?<=<@&)\d+(?=>)/g;
 }
