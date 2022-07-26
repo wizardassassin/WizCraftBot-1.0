@@ -1,6 +1,4 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import { MessageEmbed } from "discord.js";
-import { performance } from "perf_hooks";
+import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import fetch from "node-fetch";
 import { getPingColor, Timer } from "#utils/utils";
 
@@ -35,13 +33,15 @@ export async function execute(interaction) {
 
     const pingColor = getPingColor(time, 2);
 
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
         .setTitle("AnimeChan API")
         .setURL("https://github.com/RocktimSaikia/anime-chan")
-        .addField("Anime", String(json.anime))
-        .addField("Character", String(json.character))
-        .addField("Quote", String(json.quote))
-        .addField("Response Time", String(time.toFixed(4)) + "ms")
+        .addFields([
+            { name: "Anime", value: String(json.anime) },
+            { name: "Character", value: String(json.character) },
+            { name: "Quote", value: String(json.quote) },
+            { name: "Response Time", value: String(time.toFixed(4)) + "ms" },
+        ])
         .setColor(0xf1c40f)
         .setImage(json.image)
         .setTimestamp()

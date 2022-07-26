@@ -1,6 +1,4 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import { MessageEmbed } from "discord.js";
-import { performance } from "perf_hooks";
+import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import fetch from "node-fetch";
 import { getPingColor, Timer } from "#utils/utils";
 
@@ -24,10 +22,13 @@ export async function execute(interaction) {
 
     const pingColor = getPingColor(time, 2);
 
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
         .setTitle("Dog API")
         .setURL("https://dog.ceo/dog-api/")
-        .addField("Response Time", String(time.toFixed(4)) + "ms")
+        .addFields({
+            name: "Response Time",
+            value: String(time.toFixed(4)) + "ms",
+        })
         .setColor(0xf1c40f)
         .setImage(json.message)
         .setTimestamp()

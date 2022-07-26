@@ -2,7 +2,7 @@
 import fs from "fs";
 import "dotenv/config";
 import { REST } from "@discordjs/rest";
-import { Routes } from "discord-api-types/v9";
+import { Routes } from "discord.js";
 const clientId = process.env.CLIENT_ID_WIZCRAFTBOT_V1;
 const guildId = process.env.GUILD_ID_WIZCRAFTBOT_V1;
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
@@ -21,7 +21,7 @@ for (const folder of commandsFolders) {
     }
 }
 
-const rest = new REST({ version: "9" }).setToken(token);
+const rest = new REST({ version: "10" }).setToken(token);
 
 try {
     console.log('Started refreshing application (/) commands.');

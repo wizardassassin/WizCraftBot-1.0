@@ -1,5 +1,4 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import fetch from "node-fetch";
 import { getPingColor, Timer } from "#utils/utils";
 
@@ -23,14 +22,16 @@ export async function execute(interaction) {
 
     const pingColor = getPingColor(time, 2);
 
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
         .setTitle("Yes No API")
         .setURL("https://yesno.wtf/")
-        .addField("Answer", String(json.answer))
-        .addField(
-            "Response Time",
-            String((endTime - startTime).toFixed(4)) + "ms"
-        )
+        .addFields([
+            { name: "Answer", value: String(json.answer) },
+            {
+                name: "Response Time",
+                value: String((endTime - startTime).toFixed(4)) + "ms",
+            },
+        ])
         .setColor(0xf1c40f)
         .setImage(json.image)
         .setTimestamp()

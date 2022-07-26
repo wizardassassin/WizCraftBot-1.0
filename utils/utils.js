@@ -95,23 +95,43 @@ export async function fetchWrapper(urlInit, retOpt, optionsInit) {
     return val;
 }
 
+/**
+ * Simple Timer
+ */
 export class Timer {
     startTime;
     stopTime;
+    static staticStartTime;
+    static staticStopTime;
     constructor() {
         this.startTime = 0;
         this.stopTime = 0;
         this.start();
         this.stop();
     }
+    static {
+        this.staticStartTime = 0;
+        this.staticStopTime = 0;
+        this.staticStart();
+        this.staticStop();
+    }
     start() {
         this.startTime = performance.now();
+    }
+    static staticStart() {
+        this.staticStartTime = performance.now();
     }
     stop() {
         this.stopTime = performance.now();
     }
-    duration(m) {
+    static staticStop() {
+        this.staticStopTime = performance.now();
+    }
+    duration() {
         return this.stopTime - this.startTime;
+    }
+    static staticDuration() {
+        return this.staticStartTime - this.staticStopTime;
     }
 }
 

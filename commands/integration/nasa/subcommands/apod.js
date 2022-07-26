@@ -1,5 +1,4 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import { MessageEmbed, Util } from "discord.js";
+import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import fetch from "node-fetch";
 import { getPingColor, URLWrapper, Timer } from "#utils/utils";
 import ytdl from "ytdl-core";
@@ -34,7 +33,7 @@ export async function execute(interaction) {
 
     const time = timer.duration();
     const pingColor = getPingColor(time, 2);
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setTitle("Astronomy Picture of the Day (APOD)")
         .setURL("https://api.nasa.gov/")
         .setColor(0xf1c40f)
@@ -49,10 +48,11 @@ export async function execute(interaction) {
     const first = split.slice(0, mid).join(" ") + "...";
     const second = split.slice(mid).join(" ");
 
-    embed
-        .addField("Title", json.title)
-        .addField("Explanation", first)
-        .addField("Explanation Cont...", second);
+    embed.addFields([
+        { name: "Title", value: json.title },
+        { name: "Explanation", value: first },
+        { name: "Explanation Cont...", value: second },
+    ]);
 
     let content = "";
     if (json.media_type != "image") {
@@ -62,37 +62,33 @@ export async function execute(interaction) {
             const newURL = URLWrapper("https://www.youtube.com/watch", {
                 v: id,
             }).href;
-            embed.addField("Video", newURL);
+            embed.addFields({ name: "Video", value: newURL });
             content = newURL;
         } catch (error) {
             console.error(error, videoURL);
-            embed.addField("Game", videoURL);
+            embed.addFields({ name: "Game", value: videoURL });
             content = videoURL;
         }
     } else {
         if (!json.hdurl) {
             console.log(json);
         } else {
-            embed.addField("HD Url", String(json.hdurl));
+            embed.addFields({ name: "HD Url", value: String(json.hdurl) });
         }
         const imgURL = json.url;
         embed.setImage(String(imgURL));
     }
 
-    embed
-        .addField("Date", String(json.date))
-        .addField("Copyright", String(json.copyright ?? "Public Domain"));
+    embed.addFields([
+        { name: "Date", value: String(json.date) },
+        { name: "Copyright", value: String(json.copyright ?? "Public Domain") },
+    ]);
 
+    await interaction.editReply({
+        embeds: [embed],
+        files: [pingColor.file],
+    });
     if (content) {
-        await interaction.editReply({
-            embeds: [embed],
-            files: [pingColor.file],
-        });
-        interaction.followUp(content);
-    } else {
-        await interaction.editReply({
-            embeds: [embed],
-            files: [pingColor.file],
-        });
+        await interaction.followUp(content);
     }
 }

@@ -1,12 +1,11 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import { SlashCommandSubcommandBuilder } from "discord.js";
 
 export const data = new SlashCommandSubcommandBuilder()
     .setName("disconnect")
     .setDescription("Disconnects the music player.");
 /**
  *
- * @param {CommandInteraction} interaction
+ * @param {import("discord.js").CommandInteraction} interaction
  */
 export async function execute(interaction) {
     const { queue } = interaction;

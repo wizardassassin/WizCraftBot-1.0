@@ -1,24 +1,20 @@
-/*
-Relearning on how to create a discord bot
-I can use slash commands now yay
-Following: https://discordjs.guide/
-*/
+/**
+ * Relearning on how to create a discord bot
+ * I can use slash commands now yay
+ * Following: https://discordjs.guide/
+ */
 // import "./deploy-commands.js"; // dev
 import "dotenv/config";
 import fs from "fs";
 import { Low, JSONFile } from "lowdb";
-import { Client, Collection, Intents } from "discord.js";
+import { Client, Collection, IntentsBitField } from "discord.js";
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
 
-// Spent a couple hours debugging .AwaitMessages()
-// and cached voice states,
-// not realizing that I needed to add intents
+const clientIntents = new IntentsBitField();
+clientIntents.add(IntentsBitField.Flags.GuildVoiceStates, IntentsBitField.Flags.Guilds);
+
 const client = new Client({
-    intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_VOICE_STATES,
-        Intents.FLAGS.GUILD_MESSAGES,
-    ],
+    intents: clientIntents,
 });
 
 // Imports database

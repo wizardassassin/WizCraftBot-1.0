@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const data = new SlashCommandBuilder()
     .setName("user")
@@ -17,12 +16,14 @@ export async function execute(interaction) {
     let guildMember = await interaction.client.users.fetch(user.id);
     // let guildMember = interaction.guild.members.cache.get(user.id);
     // console.log(interaction.guild.members.cache.size);
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
         .setTitle("User Information")
-        .addField("Player Name", guildMember.displayName)
-        .addField("Tag", user.tag)
-        .addField("Join Date", String(guildMember.joinedAt))
-        .addField("Creation Date", String(user.createdAt))
+        .addFields([
+            { name: "Player Name", value: guildMember.displayName },
+            { name: "Tag", value: user.tag },
+            { name: "Join Date", value: String(guildMember.joinedAt) },
+            { name: "Creation Date", value: String(user.createdAt) },
+        ])
         .setColor(0xf1c40f)
         .setThumbnail(user.displayAvatarURL())
         .setTimestamp()

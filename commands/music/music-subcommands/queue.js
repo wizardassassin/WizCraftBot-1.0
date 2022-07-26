@@ -1,12 +1,11 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 
 export const data = new SlashCommandSubcommandBuilder()
     .setName("queue")
     .setDescription("Replies with the current server queue.");
 /**
  *
- * @param {CommandInteraction} interaction
+ * @param {import("discord.js").CommandInteraction} interaction
  */
 export async function execute(interaction) {
     /**@type {Array}*/
@@ -15,19 +14,19 @@ export async function execute(interaction) {
     const currentSong = songs[0];
     const nextSongs = songs.slice(1, 6);
     const nextSongs2 = songs.slice(6, 11);
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setTitle("Queue for " + interaction.guild.name)
-        .addField(
-            "Now Playing:",
-            `[${currentSong.title}](${currentSong.url}) | \`${currentSong.duration} Requested by: ${currentSong.nickname} (${currentSong.tag})\``
-        )
+        .addFields({
+            name: "Now Playing:",
+            value: `[${currentSong.title}](${currentSong.url}) | \`${currentSong.duration} Requested by: ${currentSong.nickname} (${currentSong.tag})\``,
+        })
         .setTimestamp()
         .setFooter({ text: "Have a nice day!" });
 
     if (nextSongs.length) {
-        embed.addField(
-            "Up Next:",
-            nextSongs
+        embed.addField({
+            name: "Up Next:",
+            value: nextSongs
                 .reduce(
                     (acc, cur, i) =>
                         acc +
@@ -37,12 +36,12 @@ export async function execute(interaction) {
                     ""
                 )
                 .trim(),
-            false
-        );
+            inline: false,
+        });
         if (nextSongs2.length) {
-            embed.addField(
-                "\u200B",
-                nextSongs2
+            embed.addFields({
+                name: "\u200B",
+                value: nextSongs2
                     .reduce(
                         (acc, cur, i) =>
                             acc +
@@ -52,14 +51,14 @@ export async function execute(interaction) {
                         ""
                     )
                     .trim(),
-                false
-            );
+                inline: false,
+            });
         }
     }
-    embed.addField(
-        "Settings:",
-        `\`repeatSong:\` **${queue.repeatSong}**\n\`loopQueue:\` **${queue.loopQueue}**`
-    );
+    embed.addFields({
+        name: "Settings:",
+        value: `\`repeatSong:\` **${queue.repeatSong}**\n\`loopQueue:\` **${queue.loopQueue}**`,
+    });
 
     await interaction.editReply({ embeds: [embed] });
 }
