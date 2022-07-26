@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { Collection, CommandInteraction } from "discord.js";
+import { Collection, SlashCommandBuilder } from "discord.js";
 import fs from "fs";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -32,7 +31,7 @@ export { data };
 
 /**
  *
- * @param {CommandInteraction} interaction
+ * @param {import("discord.js").CommandInteraction} interaction
  */
 export async function execute(interaction) {
     const subcommandGroupName = interaction.options.getSubcommandGroup();

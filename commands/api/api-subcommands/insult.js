@@ -1,5 +1,4 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import fetch from "node-fetch";
 import { getPingColor, Timer } from "#utils/utils";
 
@@ -25,12 +24,14 @@ export async function execute(interaction) {
 
     const pingColor = getPingColor(time, 2);
 
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
         .setTitle("Evil Insult Generator API")
         .setURL("https://evilinsult.com/api/")
-        .addField("Insult", String(json.insult))
-        .addField("Number", String(json.number))
-        .addField("Response Time", String(time.toFixed(4)) + "ms")
+        .addFields([
+            { name: "Insult", value: String(json.insult) },
+            { name: "Number", value: String(json.number) },
+            { name: "Response Time", value: String(time.toFixed(4)) + "ms" },
+        ])
         .setColor(0xf1c40f)
         .setImage(json.image)
         .setTimestamp()

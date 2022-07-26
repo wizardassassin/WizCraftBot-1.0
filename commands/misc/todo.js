@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const data = new SlashCommandBuilder()
     .setName("todo")
@@ -7,7 +6,7 @@ export const data = new SlashCommandBuilder()
         "Replies with all the things I need or want to do with the bot."
     );
 export async function execute(interaction) {
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setTitle("TODO")
         .setDescription(
             list
@@ -32,4 +31,6 @@ const list = [
     "Chess command.",
     "Add TypeScript.",
     "Add hypixel api integration.",
+    "Place Response Time into the footer.",
+    "Maybe use an AttachmentBuilder",
 ];

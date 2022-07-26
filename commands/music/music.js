@@ -1,5 +1,8 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { Collection, Permissions } from "discord.js";
+import {
+    Collection,
+    PermissionsBitField,
+    SlashCommandBuilder,
+} from "discord.js";
 import fs from "fs";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -36,8 +39,13 @@ export { data };
 export async function execute(interaction) {
     await interaction.deferReply();
     if (
-        !interaction.member.permissions.has(Permissions.FLAGS.CONNECT) ||
-        !interaction.member.permissions.has(Permissions.FLAGS.SPEAK)
+        !interaction.member.permissions.has(
+            PermissionsBitField.Flags.Connect
+        ) ||
+        !interaction.member.permissions.has(
+            PermissionsBitField.Flags.RequestToSpeak
+        ) ||
+        !interaction.member.permissions.has(PermissionsBitField.Flags.Stream)
     ) {
         // If they don't have the required permissions
         await interaction.editReply(

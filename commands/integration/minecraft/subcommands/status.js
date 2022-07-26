@@ -1,7 +1,6 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import { performance } from "perf_hooks";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import mcServerStatus from "minecraft-server-util";
+import { Timer } from "#utils/utils";
 
 const data = new SlashCommandSubcommandBuilder()
     .setName("status")
@@ -60,21 +59,22 @@ export async function execute(interaction) {
         port = 25565;
     }
 
-    const start = performance.now();
+    const timer = new Timer();
+    timer.start();
     let result;
     try {
         result = await mcServerStatus.status(ip, port, options);
         // console.log(result);
     } catch (error) {
         console.error(error);
-        const stop = performance.now();
-        const duration = stop - start;
+        timer.stop();
+        const duration = timer.duration();
         await sleep(options.timeout - duration);
         await interaction.editReply("Server is offline (probably).");
         return;
     }
-    const stop = performance.now();
-    const duration = stop - start;
+    timer.stop();
+    const duration = timer.duration();
 
     // Negative numbers should be fine
     await sleep(options.timeout - duration);
@@ -87,36 +87,52 @@ export async function execute(interaction) {
     else icon = "884158153044934666";
     const url = `https://cdn.discordapp.com/emojis/${icon}.png`;
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setTitle("Minecraft Server Status")
         .setURL("https://github.com/PassTheMayo/minecraft-server-util") // https://www.npmjs.com/package/minecraft-server-util
-        .addField("Server IP", String(ip))
-        .addField(
-            "Version",
-            `${String(result.version.name).replace(
-                /§[0-9a-g]/g,
-                ""
-            )} (Protocol ${String(result.version.protocol)})`
+        .addFields(
+            {
+                name: "Server IP",
+                value: String(ip),
+            },
+            {
+                name: "Version",
+                value: `${String(result.version.name).replace(
+                    /§[0-9a-g]/g,
+                    ""
+                )} (Protocol ${String(result.version.protocol)})`,
+            },
+            {
+                name: "Players",
+                value: `${String(result.players.online)}/${String(
+                    result.players.max
+                )}`,
+            },
+            {
+                name: "Sample Players",
+                value: `${JSON.stringify(
+                    (result.players.sample || []).map(({ id, name }) =>
+                        `${name} (${id})`
+                            .replace(/§[0-9a-g]/g, "")
+                            .replace(/https:\/\//g, "https\\://")
+                    ),
+                    null,
+                    2
+                )}`,
+            },
+            {
+                name: "MOTD",
+                value: String(result.motd.clean.trim()),
+            },
+            {
+                name: "srvRecord",
+                value: JSON.stringify(result.srvRecord || {}),
+            },
+            {
+                name: "Roundtrip Latency",
+                value: String(result.roundTripLatency) + "ms",
+            }
         )
-        .addField(
-            "Players",
-            `${String(result.players.online)}/${String(result.players.max)}`
-        )
-        .addField(
-            "Sample Players",
-            `${JSON.stringify(
-                (result.players.sample || []).map(({ id, name }) =>
-                    `${name} (${id})`
-                        .replace(/§[0-9a-g]/g, "")
-                        .replace(/https:\/\//g, "https\\://")
-                ),
-                null,
-                2
-            )}`
-        )
-        .addField("MOTD", String(result.motd.clean.trim()))
-        .addField("srvRecord", JSON.stringify(result.srvRecord || {}))
-        .addField("Roundtrip Latency", String(result.roundTripLatency) + "ms")
         .setColor(0xf1c40f)
         .setTimestamp()
         .setFooter({ text: "Have a nice day!", iconURL: url });

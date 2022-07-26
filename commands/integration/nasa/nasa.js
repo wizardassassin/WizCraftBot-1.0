@@ -1,5 +1,4 @@
-import { SlashCommandSubcommandGroupBuilder } from "@discordjs/builders";
-import { Collection } from "discord.js";
+import { Collection, SlashCommandSubcommandGroupBuilder } from "discord.js";
 import fs from "fs";
 import { dirname } from "path";
 import { fileURLToPath } from "url";

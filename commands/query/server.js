@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const data = new SlashCommandBuilder()
     .setName("server")
@@ -13,14 +12,28 @@ export async function execute(interaction) {
     let owner = await interaction.client.users.fetch(interaction.guild.ownerId);
     // let owner = interaction.guild.members.cache.get(interaction.guild.ownerId);
     // console.log(interaction.guild.members.cache.size);
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
         .setTitle("Server Information")
-        .addField("Current Server", interaction.guild.name)
-        .addField("Description", interaction.guild.description || "N/A")
-        .addField("Member Count", String(interaction.guild.memberCount))
-        .addField("Owner", owner.user.tag)
-        .addField("Creation Date", String(interaction.guild.createdAt))
-        .addField("Availability", String(interaction.guild.available))
+        .addFields([
+            { name: "Current Server", value: interaction.guild.name },
+            {
+                name: "Description",
+                value: interaction.guild.description || "N/A",
+            },
+            {
+                name: "Member Count",
+                value: String(interaction.guild.memberCount),
+            },
+            { name: "Owner", value: owner.user.tag },
+            {
+                name: "Creation Date",
+                value: String(interaction.guild.createdAt),
+            },
+            {
+                name: "Availability",
+                value: String(interaction.guild.available),
+            },
+        ])
         .setColor(0xf1c40f)
         .setThumbnail(interaction.guild.iconURL())
         .setTimestamp()

@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 // Green 884158152973615105
 // Yellow 884158153011376208
@@ -77,10 +76,12 @@ function createEmbed(question) {
     let value = Math.floor(Math.random() * responses.length);
     let [reply, icon] = responses[value];
     const url = `https://cdn.discordapp.com/emojis/${icon}.png`;
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
         .setTitle("Magic 8-Ball")
-        .addField("Question", String(question))
-        .addField("Response", String(reply))
+        .addFields([
+            { name: "Question", value: String(question) },
+            { name: "Response", value: String(reply) },
+        ])
         .setColor(0xf1c40f)
         .setThumbnail(url)
         .setTimestamp()
