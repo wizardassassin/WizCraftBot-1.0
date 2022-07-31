@@ -37,6 +37,9 @@ export async function execute(interaction) {
 
     const { queue } = interaction;
 
+    const prevRepeatSong = queue.repeatSong;
+    const prevLoopQueue = queue.loopQueue;
+
     if (scope === "song") {
         if (repeat === "toggle") {
             queue.repeatSong = !queue.repeatSong;
@@ -55,5 +58,16 @@ export async function execute(interaction) {
         }
     }
 
-    await interaction.editReply(`Done.`);
+    let formattedRepeatSong = queue.repeatSong;
+    let formattedLoopQueue = queue.loopQueue;
+    if (prevRepeatSong != formattedRepeatSong) {
+        formattedRepeatSong = `*${formattedRepeatSong}*`;
+    }
+    if (prevLoopQueue != queue.loopQueue) {
+        formattedLoopQueue = `*${formattedLoopQueue}*`;
+    }
+
+    await interaction.editReply(
+        `\`repeatSong:\` **${formattedRepeatSong}**\n\`loopQueue:\` **${formattedLoopQueue}**`
+    );
 }

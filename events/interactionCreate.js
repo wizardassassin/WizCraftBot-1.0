@@ -1,3 +1,5 @@
+import { ActionRowBuilder, ComponentBuilder } from "discord.js";
+
 export const name = "interactionCreate";
 
 /**
@@ -7,10 +9,22 @@ export const name = "interactionCreate";
 export async function execute(interaction) {
     const { client } = interaction;
     console.log(
-        `${interaction.user.tag} in #${interaction.channel?.name} triggered an interaction [${interaction.commandName}].`
+        `${interaction.user.tag} in #${interaction.channel?.name} triggered an interaction.`
     );
 
+    if (interaction.isButton()) {
+        console.log("Button");
+        return;
+    }
+
+    if (interaction.isSelectMenu()) {
+        console.log("Select Menu");
+        return;
+    }
+
     if (!interaction.isChatInputCommand()) return;
+
+    console.log("Chat Input Command");
 
     const command = client.commands.get(interaction.commandName);
 
