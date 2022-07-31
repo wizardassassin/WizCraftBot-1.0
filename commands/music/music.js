@@ -183,7 +183,7 @@ function playNextSong(queue) {
     const { guild, connection, player, songs } = queue;
 
     // Deleting the queue
-    if (songs.length == 0) {
+    if (songs.length === 0) {
         guildQueue.delete(guild.id);
         connection.destroy();
         return;

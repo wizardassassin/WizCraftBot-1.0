@@ -54,7 +54,7 @@ export function getPingColor(ping, times) {
  * @param {Number} pos
  */
 function overrideArr(arr2D, arr1D, pos) {
-    if (arr1D.length == 0) {
+    if (arr1D.length === 0) {
         return;
     }
     const len = Math.min(arr1D.length, arr2D.length);

@@ -51,7 +51,7 @@ export async function execute(interaction) {
     const day = interaction.options.getInteger("day");
     let number = integer;
 
-    if (type == "date" && month && day) number = `${month}/${day}`;
+    if (type === "date" && month && day) number = `${month}/${day}`;
 
     const timer = new Timer();
     timer.start();
