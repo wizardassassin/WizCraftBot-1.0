@@ -29,7 +29,7 @@ export async function execute(interaction) {
             { name: "Answer", value: String(json.answer) },
             {
                 name: "Response Time",
-                value: String((endTime - startTime).toFixed(4)) + "ms",
+                value: String((time).toFixed(4)) + "ms",
             },
         ])
         .setColor(0xf1c40f)
