@@ -21,6 +21,7 @@ for (const subcommandFile of subcommandFiles) {
 
 const authUsers = new Set();
 authUsers.add(process.env.DISCORD_DEV_USER_ID);
+const useAuth = false;
 
 export { data };
 
@@ -30,7 +31,7 @@ export async function execute(interaction) {
 
     if (!subcommand) return;
 
-    if (!authUsers.has(interaction.user.id)) return;
+    if (useAuth && !authUsers.has(interaction.user.id)) return;
 
     try {
         subcommand.execute(interaction);
