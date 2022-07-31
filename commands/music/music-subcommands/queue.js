@@ -24,7 +24,7 @@ export async function execute(interaction) {
         .setFooter({ text: "Have a nice day!" });
 
     if (nextSongs.length) {
-        embed.addField({
+        embed.addFields({
             name: "Up Next:",
             value: nextSongs
                 .reduce(
