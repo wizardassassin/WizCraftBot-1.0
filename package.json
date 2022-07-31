@@ -49,7 +49,10 @@
     "bot",
     "minecraft",
     "node",
-    "discord"
+    "discord",
+    "nodejs",
+    "discord-bot",
+    "discordjs"
   ],
   "bugs": {
     "url": "https://github.com/wizardassassin/WizCraftBot-1.0/issues"
