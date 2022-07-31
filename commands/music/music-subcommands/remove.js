@@ -22,7 +22,7 @@ export async function execute(interaction) {
         await interaction.editReply("That position does not exist.");
         return;
     }
-    if (index == 0) {
+    if (index === 0) {
         player.stop();
     }
     const removed = songs.splice(index, 1);
