@@ -1,6 +1,7 @@
 # WizCraftBot-1.0
-Relearning on creating a discord bot.
-# Todo
+A discord bot of epic awesomeness.
+
+# TODO
 - Comments and JSDocs
 - 99% embed only replies.
 - Pages for the queue command.
@@ -15,7 +16,7 @@ Relearning on creating a discord bot.
 - Add hypixel api integration.
 - Place Response Time into the footer.
 - Maybe use an AttachmentBuilder
+- Add more documentation
+
 # Notes
-Obvious places of initializing external connections:
- - [API Subcommands](./commands/api/api-subcommands)
- - [Minecraft Server Status](./commands/integration/minecraft/minecraft.js)
+- TypeScript?
