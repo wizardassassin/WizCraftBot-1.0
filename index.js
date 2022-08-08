@@ -11,7 +11,11 @@ import { Client, Collection, IntentsBitField } from "discord.js";
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
 
 const clientIntents = new IntentsBitField();
-clientIntents.add(IntentsBitField.Flags.GuildVoiceStates, IntentsBitField.Flags.Guilds);
+clientIntents.add(
+    IntentsBitField.Flags.GuildVoiceStates,
+    IntentsBitField.Flags.Guilds,
+    IntentsBitField.Flags.DirectMessages,
+);
 
 const client = new Client({
     intents: clientIntents,
