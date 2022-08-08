@@ -17,6 +17,7 @@ for (const folder of commandsFolders) {
         .filter((file) => file.endsWith(".js"));
     for (const file of commandFiles) {
         const command = await import(`./commands/${folder}/${file}`);
+        command.data.setDMPermission(false); // Hotfix
         commands.push(command.data.toJSON());
     }
 }
@@ -24,7 +25,7 @@ for (const folder of commandsFolders) {
 const rest = new REST({ version: "10" }).setToken(token);
 
 try {
-    console.log('Started refreshing application (/) commands.');
+    console.log("Started refreshing application (/) commands.");
 
     await rest.put(
         Routes.applicationGuildCommands(clientId, guildId),
@@ -35,7 +36,7 @@ try {
     );
 
     // console.log("Successfully registered application commands.");
-    console.log('Successfully reloaded application (/) commands.');
+    console.log("Successfully reloaded application (/) commands.");
 } catch (error) {
     console.error(error);
 }
