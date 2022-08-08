@@ -57,4 +57,7 @@ for (const file of eventFiles) {
     }
 }
 
+// Adds Important Info
+client.componentCollectors = new Collection();
+
 client.login(token);

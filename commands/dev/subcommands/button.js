@@ -3,6 +3,7 @@ import {
     ButtonBuilder,
     ButtonStyle,
     Colors,
+    ComponentType,
     EmbedBuilder,
     SelectMenuBuilder,
     SlashCommandSubcommandBuilder,
@@ -116,7 +117,10 @@ export async function execute(interaction) {
                 comp.setDisabled(true);
             }
         }
-        await i.update({ content: "A button was clicked!", components: [row3] });
+        await i.update({
+            content: "A button was clicked!",
+            components: [row3],
+        });
     });
 
     collector.on("end", (collected) =>

@@ -9,17 +9,37 @@ export const name = "interactionCreate";
 export async function execute(interaction) {
     const { client } = interaction;
     console.log(
-        `${interaction.user.tag} in #${interaction.channel?.name} triggered an interaction.`
+        `${interaction.user.tag} in ${interaction.guild.name} | #${interaction.channel?.name} triggered an interaction.`
     );
 
     if (interaction.isButton()) {
         console.log("Button");
-        return;
+        // return;
     }
 
     if (interaction.isSelectMenu()) {
         console.log("Select Menu");
-        return;
+        // return;
+    }
+
+    if (interaction.isMessageComponent()) {
+        if (!client.componentCollectors.has(interaction.message.id)) {
+            console.log("Timed Out Message Component");
+            interaction.reply({
+                content: "Error: That message component might have timed out.",
+                ephemeral: true,
+            });
+        } else if (
+            client.componentCollectors.get(interaction.message.id) ??
+            interaction.user.id !== interaction.user.id
+        ) {
+            console.log("User Specific Message Component");
+            interaction.reply({
+                content:
+                    "Error: That message component might be user specific.",
+                ephemeral: true,
+            });
+        }
     }
 
     if (!interaction.isChatInputCommand()) return;
