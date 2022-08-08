@@ -12,19 +12,24 @@ export async function execute(interaction) {
         `${interaction.user.tag} in ${interaction.guild?.name} | #${interaction.channel?.name} triggered an interaction.`
     );
 
+    // console.log(interaction.channel);
+    // console.log(interaction.guild);
+
     if (
         interaction.channel?.type === ChannelType.DM ||
-        interaction.channel?.type === ChannelType.GroupDM
+        interaction.channel?.type === ChannelType.GroupDM ||
+        (interaction.guild === null && interaction.channel === null)
     ) {
-        console.log(
-            `${
-                interaction.channel?.type === ChannelType.DM ? "DM" : GroupDM
-            } Interaction`
-        );
-        interaction.reply({
-            content: "Error: Command might have been sent though a DM.",
-            ephemeral: true,
-        });
+        console.log({ channel: interaction.channel, guild: interaction.guild });
+        console.log(`DM Interaction`);
+        interaction
+            .reply({
+                content: "Error: Command might have been sent though a DM.",
+                ephemeral: true,
+            })
+            .catch((rej) => {
+                console.error(rej);
+            });
         return;
     }
 
