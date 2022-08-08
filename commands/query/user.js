@@ -12,15 +12,15 @@ export const data = new SlashCommandBuilder()
  */
 export async function execute(interaction) {
     let user = interaction.options.getUser("user") || interaction.user;
-    // let guildMember = await interaction.guild.members.fetch(user.id);
-    let guildMember = await interaction.client.users.fetch(user.id);
+    let guildMember = await interaction.guild.members.fetch(user.id);
+    // let guildMember = await interaction.client.users.fetch(user.id);
     // let guildMember = interaction.guild.members.cache.get(user.id);
     // console.log(interaction.guild.members.cache.size);
     let embed = new EmbedBuilder()
         .setTitle("User Information")
         .addFields([
-            { name: "Player Name", value: guildMember.displayName },
-            { name: "Tag", value: user.tag },
+            { name: "Player Name", value: String(guildMember.displayName) },
+            { name: "Tag", value: String(user.tag) },
             { name: "Join Date", value: String(guildMember.joinedAt) },
             { name: "Creation Date", value: String(user.createdAt) },
         ])
