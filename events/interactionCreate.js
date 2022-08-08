@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ComponentBuilder } from "discord.js";
+import { ActionRowBuilder, ChannelType, ComponentBuilder } from "discord.js";
 
 export const name = "interactionCreate";
 
@@ -9,8 +9,24 @@ export const name = "interactionCreate";
 export async function execute(interaction) {
     const { client } = interaction;
     console.log(
-        `${interaction.user.tag} in ${interaction.guild.name} | #${interaction.channel?.name} triggered an interaction.`
+        `${interaction.user.tag} in ${interaction.guild?.name} | #${interaction.channel?.name} triggered an interaction.`
     );
+
+    if (
+        interaction.channel?.type === ChannelType.DM ||
+        interaction.channel?.type === ChannelType.GroupDM
+    ) {
+        console.log(
+            `${
+                interaction.channel?.type === ChannelType.DM ? "DM" : GroupDM
+            } Interaction`
+        );
+        interaction.reply({
+            content: "Error: Command might have been sent though a DM.",
+            ephemeral: true,
+        });
+        return;
+    }
 
     if (interaction.isButton()) {
         console.log("Button");
