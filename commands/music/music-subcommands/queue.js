@@ -1,4 +1,11 @@
-import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
+import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    EmbedBuilder,
+    SlashCommandSubcommandBuilder,
+    userMention,
+} from "discord.js";
 
 export const data = new SlashCommandSubcommandBuilder()
     .setName("queue")
@@ -21,7 +28,7 @@ export async function execute(interaction) {
             value: `[${currentSong.title}](${currentSong.url}) | \`${currentSong.duration} Requested by: ${currentSong.nickname} (${currentSong.tag})\``,
         })
         .setTimestamp()
-        .setFooter({ text: "Have a nice day!" });
+        .setFooter({ text: `Page ${2.72}/${3.14}  •  Have a nice day!` });
 
     if (nextSongs.length) {
         embed.addFields({
@@ -60,5 +67,44 @@ export async function execute(interaction) {
         value: `\`repeatSong:\` **${queue.repeatSong}**\n\`loopQueue:\` **${queue.loopQueue}**`,
     });
 
-    await interaction.editReply({ embeds: [embed] });
+    const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+            .setCustomId("prev")
+            .setLabel("Prev Page")
+            .setStyle(ButtonStyle.Success)
+            .setEmoji("◀️"),
+        new ButtonBuilder()
+            .setCustomId("next")
+            .setLabel("Next Page")
+            .setStyle(ButtonStyle.Success)
+            .setEmoji("▶️")
+    );
+
+    const reply = await interaction.editReply({
+        embeds: [embed],
+        components: [row],
+    });
+
+    interaction.client.componentCollectors.set(reply.id, null);
+
+    const filter = (i) => i.message.id === reply.id;
+
+    const collector = interaction.channel.createMessageComponentCollector({
+        filter,
+        idle: 60000,
+    });
+
+    collector.on("collect", async (i) => {
+        await i.reply({
+            content: `Tell ${userMention(
+                process.env.DISCORD_DEV_USER_ID
+            )} to stop being lazy!`,
+            ephemeral: true,
+        });
+    });
+
+    collector.on("end", (collected) => {
+        console.log(`Collected ${collected.size} items`);
+        interaction.client.componentCollectors.delete(reply.id);
+    });
 }
