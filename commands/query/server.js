@@ -8,7 +8,9 @@ export const data = new SlashCommandBuilder()
  * @param {import("discord.js").CommandInteraction} interaction
  */
 export async function execute(interaction) {
-    let owner = await interaction.guild.members.fetch(interaction.guild.ownerId);
+    let owner = await interaction.guild.members.fetch(
+        interaction.guild.ownerId
+    );
     // let owner = await interaction.client.users.fetch(interaction.guild.ownerId);
     // let owner = interaction.guild.members.cache.get(interaction.guild.ownerId);
     // console.log(interaction.guild.members.cache.size);
@@ -24,14 +26,13 @@ export async function execute(interaction) {
                 name: "Member Count",
                 value: String(interaction.guild.memberCount),
             },
-            { name: "Owner", value: owner.tag },
+            {
+                name: "Owner",
+                value: `${owner.displayName} (${owner.user.tag})`,
+            },
             {
                 name: "Creation Date",
                 value: String(interaction.guild.createdAt),
-            },
-            {
-                name: "Availability",
-                value: String(interaction.guild.available),
             },
         ])
         .setColor(0xf1c40f)
