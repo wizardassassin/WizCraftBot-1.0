@@ -19,8 +19,10 @@ export async function execute(interaction) {
     let embed = new EmbedBuilder()
         .setTitle("User Information")
         .addFields([
-            { name: "Player Name", value: String(guildMember.displayName) },
-            { name: "Tag", value: String(user.tag) },
+            {
+                name: "Player Name",
+                value: `${guildMember.displayName} (${user.tag})`,
+            },
             { name: "Join Date", value: String(guildMember.joinedAt) },
             { name: "Creation Date", value: String(user.createdAt) },
         ])
