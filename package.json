@@ -21,7 +21,7 @@
     "@discordjs/rest": "^1.0.1",
     "@discordjs/voice": "^0.11.0",
     "bufferutil": "^4.0.6",
-    "discord.js": "^14.1.2",
+    "discord.js": "^14.2.0",
     "dotenv": "^16.0.1",
     "erlpack": "github:discord/erlpack",
     "ffmpeg-static": "^5.0.2",
@@ -31,7 +31,7 @@
     "minecraft-server-util": "^5.3.0",
     "node-fetch": "^3.2.10",
     "utf-8-validate": "^5.0.9",
-    "ytdl-core": "^4.11.0",
+    "ytdl-core": "^4.9.1",
     "ytpl": "^2.3.0",
     "ytsr": "^3.8.0",
     "zlib-sync": "^0.1.7"
