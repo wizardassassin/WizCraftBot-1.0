@@ -16,7 +16,7 @@ export async function execute(interaction) {
     // console.log(interaction.guild.members.cache.size);
     let embed = new EmbedBuilder()
         .setTitle("Server Information")
-        .addFields([
+        .addFields(
             { name: "Current Server", value: interaction.guild.name },
             {
                 name: "Description",
@@ -33,8 +33,8 @@ export async function execute(interaction) {
             {
                 name: "Creation Date",
                 value: String(interaction.guild.createdAt),
-            },
-        ])
+            }
+        )
         .setColor(0xf1c40f)
         .setThumbnail(interaction.guild.iconURL())
         .setTimestamp()

@@ -25,13 +25,13 @@ export async function execute(interaction) {
     let embed = new EmbedBuilder()
         .setTitle("Yes No API")
         .setURL("https://yesno.wtf/")
-        .addFields([
+        .addFields(
             { name: "Answer", value: String(json.answer) },
             {
                 name: "Response Time",
-                value: String((time).toFixed(4)) + "ms",
-            },
-        ])
+                value: String(time.toFixed(4)) + "ms",
+            }
+        )
         .setColor(0xf1c40f)
         .setImage(json.image)
         .setTimestamp()

@@ -36,12 +36,12 @@ export async function execute(interaction) {
     let embed = new EmbedBuilder()
         .setTitle("AnimeChan API")
         .setURL("https://github.com/RocktimSaikia/anime-chan")
-        .addFields([
+        .addFields(
             { name: "Anime", value: String(json.anime) },
             { name: "Character", value: String(json.character) },
             { name: "Quote", value: String(json.quote) },
-            { name: "Response Time", value: String(time.toFixed(4)) + "ms" },
-        ])
+            { name: "Response Time", value: String(time.toFixed(4)) + "ms" }
+        )
         .setColor(0xf1c40f)
         .setImage(json.image)
         .setTimestamp()

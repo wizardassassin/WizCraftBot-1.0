@@ -78,10 +78,10 @@ function createEmbed(question) {
     const url = `https://cdn.discordapp.com/emojis/${icon}.png`;
     let embed = new EmbedBuilder()
         .setTitle("Magic 8-Ball")
-        .addFields([
+        .addFields(
             { name: "Question", value: String(question) },
-            { name: "Response", value: String(reply) },
-        ])
+            { name: "Response", value: String(reply) }
+        )
         .setColor(0xf1c40f)
         .setThumbnail(url)
         .setTimestamp()

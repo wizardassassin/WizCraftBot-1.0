@@ -27,11 +27,11 @@ export async function execute(interaction) {
     let embed = new EmbedBuilder()
         .setTitle("Evil Insult Generator API")
         .setURL("https://evilinsult.com/api/")
-        .addFields([
+        .addFields(
             { name: "Insult", value: String(json.insult) },
             { name: "Number", value: String(json.number) },
-            { name: "Response Time", value: String(time.toFixed(4)) + "ms" },
-        ])
+            { name: "Response Time", value: String(time.toFixed(4)) + "ms" }
+        )
         .setColor(0xf1c40f)
         .setImage(json.image)
         .setTimestamp()
