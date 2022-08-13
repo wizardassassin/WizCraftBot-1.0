@@ -48,11 +48,11 @@ export async function execute(interaction) {
     const first = split.slice(0, mid).join(" ") + "...";
     const second = split.slice(mid).join(" ");
 
-    embed.addFields([
+    embed.addFields(
         { name: "Title", value: json.title },
         { name: "Explanation", value: first },
-        { name: "Explanation Cont...", value: second },
-    ]);
+        { name: "Explanation Cont...", value: second }
+    );
 
     let content = "";
     if (json.media_type != "image") {
@@ -79,10 +79,10 @@ export async function execute(interaction) {
         embed.setImage(String(imgURL));
     }
 
-    embed.addFields([
+    embed.addFields(
         { name: "Date", value: String(json.date) },
-        { name: "Copyright", value: String(json.copyright ?? "Public Domain") },
-    ]);
+        { name: "Copyright", value: String(json.copyright ?? "Public Domain") }
+    );
 
     await interaction.editReply({
         embeds: [embed],

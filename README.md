@@ -17,6 +17,7 @@ A discord bot of epic awesomeness.
 - Place Response Time into the footer.
 - Maybe use an AttachmentBuilder
 - Add more documentation
+- Refactor command handling
 
 # Notes
 - TypeScript?

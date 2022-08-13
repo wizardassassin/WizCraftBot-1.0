@@ -8,6 +8,7 @@ import "dotenv/config";
 import fs from "fs";
 import { Low, JSONFile } from "lowdb";
 import { Client, Collection, IntentsBitField } from "discord.js";
+
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
 
 const clientIntents = new IntentsBitField();

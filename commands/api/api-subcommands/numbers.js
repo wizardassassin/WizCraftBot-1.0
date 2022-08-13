@@ -65,10 +65,10 @@ export async function execute(interaction) {
     let embed = new EmbedBuilder()
         .setTitle("Numbers API")
         .setURL("http://numbersapi.com/")
-        .addFields([
+        .addFields(
             { name: "Result", value: String(text) },
-            { name: "Response Time", value: String(time.toFixed(4)) + "ms" },
-        ])
+            { name: "Response Time", value: String(time.toFixed(4)) + "ms" }
+        )
         .setColor(0xf1c40f)
         .setTimestamp()
         .setFooter({ text: "Have a nice day!", iconURL: pingColor.url });

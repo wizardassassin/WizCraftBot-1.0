@@ -18,14 +18,14 @@ export async function execute(interaction) {
     // console.log(interaction.guild.members.cache.size);
     let embed = new EmbedBuilder()
         .setTitle("User Information")
-        .addFields([
+        .addFields(
             {
                 name: "Player Name",
                 value: `${guildMember.displayName} (${user.tag})`,
             },
             { name: "Join Date", value: String(guildMember.joinedAt) },
-            { name: "Creation Date", value: String(user.createdAt) },
-        ])
+            { name: "Creation Date", value: String(user.createdAt) }
+        )
         .setColor(0xf1c40f)
         .setThumbnail(user.displayAvatarURL())
         .setTimestamp()
