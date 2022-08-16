@@ -13,6 +13,7 @@ import {
     createAudioPlayer,
     createAudioResource,
     joinVoiceChannel,
+    VoiceConnectionStatus,
 } from "@discordjs/voice";
 
 const guildQueue = new Collection();
@@ -121,6 +122,10 @@ function createQueue(interaction, firstSongs) {
     const player = createAudioPlayer();
 
     connection.on("stateChange", (oldState, newState) => {
+        if (newState.status === VoiceConnectionStatus.Disconnected) {
+            guildQueue.delete(guild.id);
+            connection.destroy();
+        }
         console.log(
             `Connection transitioned from ${oldState.status} to ${newState.status}`
         );
