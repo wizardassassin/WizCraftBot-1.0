@@ -7,7 +7,7 @@
     "test": "npm run build && node .",
     "build": "node deploy-commands.js",
     "debug": "nodemon --exec \"node deploy-commands.js && node .\"",
-    "start": "node deploy-commands.js && pm2 start index.js --name \"WizCraftBot 1.0\"",
+    "start": "node deploy-commands.js && pm2 start index.js --name \"WizCraftBot 1.0\" --time",
     "stop": "pm2 delete \"WizCraftBot 1.0\""
   },
   "author": "wizardassassin",
@@ -31,7 +31,7 @@
     "minecraft-server-util": "^5.3.0",
     "node-fetch": "^3.2.10",
     "utf-8-validate": "^5.0.9",
-    "ytdl-core": "^4.9.1",
+    "ytdl-core": "^4.11.0",
     "ytpl": "^2.3.0",
     "ytsr": "^3.8.0",
     "zlib-sync": "^0.1.7"
