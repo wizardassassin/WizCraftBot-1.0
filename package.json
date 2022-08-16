@@ -7,7 +7,7 @@
     "test": "npm run build && node .",
     "build": "node deploy-commands.js",
     "debug": "nodemon --exec \"node deploy-commands.js && node .\"",
-    "start": "node deploy-commands.js && pm2 start index.js --name \"WizCraftBot 1.0\" --time",
+    "start": "pm2 start index.js --name \"WizCraftBot 1.0\" --time",
     "stop": "pm2 delete \"WizCraftBot 1.0\"",
     "restart": "npm stop && npm start",
     "reset": "npm stop && npm install && npm run build && npm start"
