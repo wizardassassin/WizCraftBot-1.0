@@ -149,3 +149,30 @@ export function getIDs(message) {
     const regexChannel = /(?<=<#)\d+(?=>)/g;
     const regexRole = /(?<=<@&)\d+(?=>)/g;
 }
+
+export function secondsToTimestamp(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const secondsMod = seconds % 60;
+    const minutesMod = minutes % 60;
+
+    let secondsFormat = String(secondsMod);
+    secondsFormat = secondsFormat.padStart(2, "0");
+    let minutesFormat = String(minutesMod);
+    if (hours !== 0) {
+        minutesFormat = minutesFormat.padStart(2, "0");
+    }
+    let retStr = `${minutesFormat}:${secondsFormat}`;
+    if (hours === 0) {
+        return retStr;
+    }
+    let hoursFormat = String(hours);
+    let hLen = hoursFormat.length;
+    hLen -= 3;
+    while (hLen > 0) {
+        hoursFormat =
+            hoursFormat.slice(0, hLen) + "," + hoursFormat.slice(hLen);
+        hLen -= 3;
+    }
+    return `${hoursFormat}:${retStr}`;
+}

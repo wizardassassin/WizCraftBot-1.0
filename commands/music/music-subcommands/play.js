@@ -1,3 +1,4 @@
+import { secondsToTimestamp } from "#utils/utils";
 import { SlashCommandSubcommandBuilder } from "discord.js";
 import ytdl from "ytdl-core";
 import ytpl from "ytpl";
@@ -28,6 +29,7 @@ export async function execute(interaction) {
     const tempQueue = [];
 
     const isPlaylist = ytpl.validateID(unparsedSearch);
+    const isUrl = ytdl.validateURL(unparsedSearch);
     if (isPlaylist) {
         const playlist = await ytpl(unparsedSearch);
         const videoInfos = playlist.items.map((item) => {
@@ -50,14 +52,26 @@ export async function execute(interaction) {
             };
         });
         tempQueue.push(...videoInfos);
+    } else if (isUrl) {
+        const info = await ytdl.getBasicInfo(unparsedSearch);
+        const thumbnails = info.videoDetails.thumbnails;
+
+        const videoInfo = {
+            title: info.videoDetails.title,
+            url: info.videoDetails.video_url,
+            thumbnail: thumbnails[thumbnails.length - 1].url,
+            duration: secondsToTimestamp(info.videoDetails.lengthSeconds),
+            channel: info.videoDetails.ownerChannelName,
+            channelUrl: info.videoDetails.ownerProfileUrl,
+            nickname,
+            tag,
+        };
+
+        tempQueue.push(videoInfo);
     } else {
-        const isUrl = ytdl.validateURL(unparsedSearch);
         const searchResults = await ytsr(
-            isUrl
-                ? ytdl.getVideoID(unparsedSearch)
-                : (await ytsr.getFilters(unparsedSearch))
-                      .get("Type")
-                      .get("Video").url,
+            (await ytsr.getFilters(unparsedSearch)).get("Type").get("Video")
+                .url,
             {
                 limit: 1,
             }
