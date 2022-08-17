@@ -69,13 +69,17 @@ export async function execute(interaction) {
 
         tempQueue.push(videoInfo);
     } else {
-        const searchResults = await ytsr(
-            (await ytsr.getFilters(unparsedSearch)).get("Type").get("Video")
-                .url,
-            {
-                limit: 1,
-            }
-        );
+        const searchURL = (await ytsr.getFilters(unparsedSearch))
+            .get("Type")
+            .get("Video").url;
+        if (!searchURL) {
+            console.log(unparsedSearch);
+            await interaction.editReply("The video could not be found.");
+            return;
+        }
+        const searchResults = await ytsr(searchURL, {
+            limit: 1,
+        });
         if (searchResults.items.length <= 0) {
             await interaction.editReply("The video could not be found.");
             return;
