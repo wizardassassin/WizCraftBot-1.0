@@ -59,7 +59,7 @@ export async function execute(interaction) {
     const musicCommandName = interaction.options.getSubcommand();
     // Creates the queue
     if (!hasQueue) {
-        if (musicCommandName != "play") {
+        if (musicCommandName !== "play") {
             await interaction.editReply(
                 "There is not a currently active music instance."
             );
