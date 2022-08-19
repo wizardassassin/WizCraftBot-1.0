@@ -131,7 +131,7 @@ export class Timer {
         return this.stopTime - this.startTime;
     }
     static staticDuration() {
-        return this.staticStartTime - this.staticStopTime;
+        return this.staticStopTime - this.staticStartTime;
     }
 }
 
