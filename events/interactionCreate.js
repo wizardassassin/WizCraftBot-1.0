@@ -67,6 +67,12 @@ export async function execute(interaction) {
 
     console.log("Chat Input Command");
 
+    console.log(
+        interaction.commandName,
+        interaction.options.getSubcommandGroup(),
+        interaction.options.getSubcommand()
+    );
+
     const command = client.commands.get(interaction.commandName);
 
     if (!command) return;
