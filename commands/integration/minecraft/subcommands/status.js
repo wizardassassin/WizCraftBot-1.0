@@ -48,6 +48,13 @@ export async function execute(interaction) {
     let port = interaction.options.getInteger("port") ?? 25565;
     let server = interaction.options.getInteger("server") || "java";
 
+    const colonInd = ip.indexOf(":");
+    if (colonInd !== -1) {
+        port = Number(ip.slice(colonInd + 1)) || port;
+        ip = ip.slice(0, colonInd);
+        console.log(ip.slice(colonInd + 1));
+    }
+
     console.log({
         tag: interaction.user.tag,
         ip,
