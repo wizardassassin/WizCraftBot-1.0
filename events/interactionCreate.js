@@ -69,8 +69,8 @@ export async function execute(interaction) {
 
     console.log(
         interaction.commandName,
-        interaction.options.getSubcommandGroup(),
-        interaction.options.getSubcommand()
+        interaction.options.getSubcommandGroup(false),
+        interaction.options.getSubcommand(false)
     );
 
     const command = client.commands.get(interaction.commandName);
