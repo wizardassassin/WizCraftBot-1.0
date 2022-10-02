@@ -185,7 +185,7 @@ function modifyCurrentSong(queue) {
 }
 
 function playNextSong(queue) {
-    const { guild, connection, player, songs } = queue;
+    const { guild, textChannel, connection, player, songs } = queue;
 
     // Deleting the queue
     if (songs.length === 0) {
@@ -197,7 +197,20 @@ function playNextSong(queue) {
     // It sometimes doesn't work if the song length is too long
     let delay;
     const stream = ytdl(songs[0].url, formatOptions);
+    stream.on("info", (videoInfo, videoFormat) => {
+        // console.log(videoInfo);
+        // console.log(videoFormat);
+    });
+    let streamError = false;
     stream.on("progress", (length, downloaded, totallength) => {
+        if (Number.isNaN(totallength) && !streamError) {
+            streamError = true;
+            console.error("Error PLaying Song:", songs[0].url);
+            textChannel.send(`Error Playing "${songs[0].title}"`);
+            queue.forceSkip = true;
+            modifyCurrentSong(queue);
+            playNextSong(queue);
+        }
         clearTimeout(delay);
         delay = setTimeout(() => {
             console.log({ length, downloaded, totallength });
