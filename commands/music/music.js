@@ -208,8 +208,9 @@ function playNextSong(queue) {
             console.error("Error PLaying Song:", songs[0].url);
             textChannel.send(`Error Playing "${songs[0].title}"`);
             queue.forceSkip = true;
-            modifyCurrentSong(queue);
-            playNextSong(queue);
+            player.stop(true);
+            // modifyCurrentSong(queue);
+            // playNextSong(queue);
         }
         clearTimeout(delay);
         delay = setTimeout(() => {
