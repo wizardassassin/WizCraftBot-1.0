@@ -1,6 +1,6 @@
-import { ActivityType } from "discord.js";
+import { ActivityType, Events } from "discord.js";
 
-export const name = "ready";
+export const name = Events.ClientReady;
 export const once = true;
 
 /**
