@@ -1,6 +1,6 @@
-import { ActionRowBuilder, ChannelType, ComponentBuilder } from "discord.js";
+import { ChannelType, Events } from "discord.js";
 
-export const name = "interactionCreate";
+export const name = Events.InteractionCreate;
 
 /**
  *
