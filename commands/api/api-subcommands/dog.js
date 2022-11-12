@@ -25,13 +25,12 @@ export async function execute(interaction) {
     let embed = new EmbedBuilder()
         .setTitle("Dog API")
         .setURL("https://dog.ceo/dog-api/")
-        .addFields({
-            name: "Response Time",
-            value: String(time.toFixed(4)) + "ms",
-        })
         .setColor(0xf1c40f)
         .setImage(json.message)
         .setTimestamp()
-        .setFooter({ text: "Have a nice day!", iconURL: pingColor.url });
+        .setFooter({
+            text: `Have a nice day!  •  ${time.toFixed(4)}ms`,
+            iconURL: pingColor.url,
+        });
     await interaction.editReply({ embeds: [embed], files: [pingColor.file] });
 }
