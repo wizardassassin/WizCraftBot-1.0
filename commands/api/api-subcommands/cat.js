@@ -25,13 +25,12 @@ export async function execute(interaction) {
     let embed = new EmbedBuilder()
         .setTitle("CATAAS API")
         .setURL("https://cataas.com/")
-        .addFields({
-            name: "Response Time",
-            value: String(time.toFixed(4)) + "ms",
-        })
         .setColor(0xf1c40f)
         .setImage("https://cataas.com/" + json.url)
         .setTimestamp()
-        .setFooter({ text: "Have a nice day!", iconURL: pingColor.url });
+        .setFooter({
+            text: `Have a nice day!  •  ${time.toFixed(4)}ms`,
+            iconURL: pingColor.url,
+        });
     await interaction.editReply({ embeds: [embed], files: [pingColor.file] });
 }
