@@ -176,3 +176,19 @@ export function secondsToTimestamp(seconds) {
     }
     return `${hoursFormat}:${retStr}`;
 }
+
+/**
+ *
+ * @param {import("discord.js").Guild} guild
+ */
+export async function getGuildInfo(guild) {
+    const owner = await guild.client.users.fetch(guild.ownerId);
+    return {
+        name: guild.name,
+        id: guild.id,
+        memberCount: guild.memberCount,
+        owner: owner.tag,
+        ownerId: guild.ownerId,
+        createdAt: guild.createdAt.toString(),
+    };
+}
