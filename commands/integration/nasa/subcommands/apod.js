@@ -45,8 +45,8 @@ export async function execute(interaction) {
 
     const split = json.explanation.split(" ");
     const mid = Math.floor(split.length / 2);
-    const first = split.slice(0, mid).join(" ") + "...";
-    const second = split.slice(mid).join(" ");
+    const first = split.slice(0, mid).join(" ") + " ...";
+    const second = "... " + split.slice(mid).join(" ");
 
     embed.addFields(
         { name: "Title", value: json.title },
