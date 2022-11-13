@@ -37,7 +37,7 @@ const options = {
 
 /**
  *
- * @param {import("discord.js").CommandInteraction} interaction
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
  */
 export async function execute(interaction) {
     await interaction.deferReply();

@@ -18,7 +18,7 @@ export { data };
 
 /**
  *
- * @param {import("discord.js").CommandInteraction} interaction
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
  */
 export async function execute(interaction) {
     const row = new ActionRowBuilder().addComponents(
