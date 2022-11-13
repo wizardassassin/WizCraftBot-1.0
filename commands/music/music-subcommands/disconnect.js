@@ -5,7 +5,7 @@ export const data = new SlashCommandSubcommandBuilder()
     .setDescription("Disconnects the music player.");
 /**
  *
- * @param {import("discord.js").CommandInteraction} interaction
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
  */
 export async function execute(interaction) {
     const { queue } = interaction;

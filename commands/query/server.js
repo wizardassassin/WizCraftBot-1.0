@@ -5,7 +5,7 @@ export const data = new SlashCommandBuilder()
     .setDescription("Replies with server info!");
 /**
  *
- * @param {import("discord.js").CommandInteraction} interaction
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
  */
 export async function execute(interaction) {
     let owner = await interaction.guild.members.fetch(
