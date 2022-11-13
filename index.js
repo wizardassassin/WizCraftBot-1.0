@@ -6,7 +6,8 @@
 // import "./deploy-commands.js"; // dev
 import "dotenv/config";
 import fs from "fs";
-import { Low, JSONFile } from "lowdb";
+import { Low } from "lowdb";
+import { JSONFile } from "lowdb/node";
 import { Client, Collection, IntentsBitField } from "discord.js";
 
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
