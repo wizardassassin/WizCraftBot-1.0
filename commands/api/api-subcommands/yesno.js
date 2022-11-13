@@ -8,7 +8,7 @@ export const data = new SlashCommandSubcommandBuilder()
 
 /**
  *
- * @param {import("discord.js").CommandInteraction} interaction
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
  */
 export async function execute(interaction) {
     await interaction.deferReply();
@@ -25,16 +25,13 @@ export async function execute(interaction) {
     let embed = new EmbedBuilder()
         .setTitle("Yes No API")
         .setURL("https://yesno.wtf/")
-        .addFields(
-            { name: "Answer", value: String(json.answer) },
-            {
-                name: "Response Time",
-                value: String(time.toFixed(4)) + "ms",
-            }
-        )
+        .addFields({ name: "Answer", value: String(json.answer) })
         .setColor(0xf1c40f)
         .setImage(json.image)
         .setTimestamp()
-        .setFooter({ text: "Have a nice day!", iconURL: pingColor.url });
+        .setFooter({
+            text: `Have a nice day!  •  ${time.toFixed(4)}ms`,
+            iconURL: pingColor.url,
+        });
     await interaction.editReply({ embeds: [embed], files: [pingColor.file] });
 }

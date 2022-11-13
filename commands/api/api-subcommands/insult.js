@@ -8,7 +8,7 @@ export const data = new SlashCommandSubcommandBuilder()
 
 /**
  *
- * @param {import("discord.js").CommandInteraction} interaction
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
  */
 export async function execute(interaction) {
     await interaction.deferReply();
@@ -29,12 +29,14 @@ export async function execute(interaction) {
         .setURL("https://evilinsult.com/api/")
         .addFields(
             { name: "Insult", value: String(json.insult) },
-            { name: "Number", value: String(json.number) },
-            { name: "Response Time", value: String(time.toFixed(4)) + "ms" }
+            { name: "Number", value: String(json.number) }
         )
         .setColor(0xf1c40f)
         .setImage(json.image)
         .setTimestamp()
-        .setFooter({ text: "Have a nice day!", iconURL: pingColor.url });
+        .setFooter({
+            text: `Have a nice day!  •  ${time.toFixed(4)}ms`,
+            iconURL: pingColor.url,
+        });
     await interaction.editReply({ embeds: [embed], files: [pingColor.file] });
 }

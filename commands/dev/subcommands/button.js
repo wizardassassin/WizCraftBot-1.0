@@ -18,7 +18,7 @@ export { data };
 
 /**
  *
- * @param {import("discord.js").CommandInteraction} interaction
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
  */
 export async function execute(interaction) {
     const row = new ActionRowBuilder().addComponents(
@@ -78,13 +78,13 @@ export async function execute(interaction) {
         .addFields({ name: "Cool Field", value: "Penguin" })
         .setAuthor({
             name: interaction.client.user.tag,
-            iconURL: interaction.client.user.avatarURL(),
+            iconURL: interaction.client.user.displayAvatarURL(),
             url: "https://github.com/wizardassassin/WizCraftBot-1.0",
         })
         .setTimestamp()
         .setFooter({
             text: "Have a nice day!",
-            iconURL: interaction.client.user.avatarURL(),
+            iconURL: interaction.client.user.displayAvatarURL(),
         });
 
     const reply = await interaction.reply({

@@ -19,7 +19,7 @@ export const data = new SlashCommandSubcommandBuilder()
 
 /**
  *
- * @param {import("discord.js").CommandInteraction} interaction
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
  */
 export async function execute(interaction) {
     await interaction.deferReply();
@@ -39,12 +39,14 @@ export async function execute(interaction) {
         .addFields(
             { name: "Anime", value: String(json.anime) },
             { name: "Character", value: String(json.character) },
-            { name: "Quote", value: String(json.quote) },
-            { name: "Response Time", value: String(time.toFixed(4)) + "ms" }
+            { name: "Quote", value: String(json.quote) }
         )
         .setColor(0xf1c40f)
         .setImage(json.image)
         .setTimestamp()
-        .setFooter({ text: "Have a nice day!", iconURL: pingColor.url });
+        .setFooter({
+            text: `Have a nice day!  •  ${time.toFixed(4)}ms`,
+            iconURL: pingColor.url,
+        });
     await interaction.editReply({ embeds: [embed], files: [pingColor.file] });
 }

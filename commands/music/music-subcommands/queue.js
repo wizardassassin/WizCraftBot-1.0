@@ -12,7 +12,7 @@ export const data = new SlashCommandSubcommandBuilder()
     .setDescription("Replies with the current server queue.");
 /**
  *
- * @param {import("discord.js").CommandInteraction} interaction
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
  */
 export async function execute(interaction) {
     /**@type {Array}*/

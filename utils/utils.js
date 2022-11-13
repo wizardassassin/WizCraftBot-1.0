@@ -176,3 +176,49 @@ export function secondsToTimestamp(seconds) {
     }
     return `${hoursFormat}:${retStr}`;
 }
+
+/**
+ *
+ * @param {import("discord.js").Guild} guild
+ */
+export async function getGuildInfo(guild) {
+    const owner = await guild.client.users.fetch(guild.ownerId);
+    return {
+        name: guild.name,
+        id: guild.id,
+        memberCount: guild.memberCount,
+        owner: owner.tag,
+        ownerId: guild.ownerId,
+        createdAt: guild.createdAt.toString(),
+    };
+}
+
+/**
+ *
+ * @param {import("discord.js").EmbedBuilder} embed
+ * @param {import("discord.js").ClientUser} user
+ * @param {{url: string;file: {attachment: string;name: string;}}} pingColor
+ * @param {Number} time
+ * @returns
+ */
+export function getReplyTemplate(embed, user, pingColor, time = -1) {
+    const footerText = `Have a nice day!  •  ${
+        time === -1 ? time : time.toFixed(4)
+    }ms`;
+    embed
+        .setAuthor({
+            name: user.tag,
+            iconURL: user.displayAvatarURL(),
+            url: "https://github.com/wizardassassin/WizCraftBot-1.0",
+        })
+        .setColor(0xf1c40f)
+        .setTimestamp()
+        .setFooter({
+            text: footerText,
+            iconURL: pingColor.url,
+        });
+    return {
+        embeds: [embed],
+        files: [pingColor.file],
+    };
+}
