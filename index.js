@@ -6,8 +6,6 @@
 // import "./deploy-commands.js"; // dev
 import "dotenv/config";
 import fs from "fs";
-import { Low } from "lowdb";
-import { JSONFile } from "lowdb/node";
 import { Client, Collection, IntentsBitField } from "discord.js";
 
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
@@ -21,13 +19,6 @@ clientIntents.add(
 const client = new Client({
     intents: clientIntents,
 });
-
-// Imports database
-const adapter = new JSONFile("./database.json");
-const db = new Low(adapter);
-client.database = db;
-await db.read();
-db.data ||= {};
 
 // Imports commands
 client.commands = new Collection();
