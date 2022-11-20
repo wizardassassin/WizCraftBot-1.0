@@ -81,9 +81,16 @@ export async function execute(interaction) {
         await command.execute(interaction);
     } catch (error) {
         console.error(error);
-        await interaction.reply({
+        const response = {
             content: "There was an error while executing this command!",
             ephemeral: true,
-        });
+        };
+        if (interaction.replied) {
+            await interaction.followUp(response);
+        } else if (interaction.deferred) {
+            await interaction.editReply(response);
+        } else {
+            await interaction.reply(response);
+        }
     }
 }

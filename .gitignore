@@ -110,5 +110,6 @@ dist
 .test*
 test/
 
-# Database files
-database.json
+# Database Files
+dev.db
+dev.db-journal

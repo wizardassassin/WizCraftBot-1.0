@@ -9,7 +9,7 @@ import {
 
 const data = new SlashCommandSubcommandBuilder()
     .setName("imagelib")
-    .setDescription("Image and Video Library.")
+    .setDescription("Image and Video Library (also audio).")
     .addStringOption((option) =>
         option
             .setName("query")
@@ -100,7 +100,7 @@ export async function execute(interaction) {
     }
     const originalURL = `http://images-assets.nasa.gov/${mediaType}/${nasaId}/${nasaId}~orig.${fileExtension}`;
     const embed = new EmbedBuilder()
-        .setTitle("Astronomy Picture of the Day (APOD)")
+        .setTitle("NASA Image and Video Library")
         .setURL("https://api.nasa.gov/")
         .addFields({ name: "Title", value: title });
     if (thumbnail) {
