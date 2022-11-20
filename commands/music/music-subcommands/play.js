@@ -1,3 +1,4 @@
+import prisma from "#utils/db";
 import { secondsToTimestamp } from "#utils/utils";
 import { SlashCommandSubcommandBuilder } from "discord.js";
 import ytdl from "ytdl-core";
@@ -13,9 +14,14 @@ export const data = new SlashCommandSubcommandBuilder()
             .setDescription("URL or search query for the youtube video.")
             .setRequired(true)
     );
+
+/**
+ *
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
+ */
 export async function execute(interaction) {
     // Playlist? Video? Query?
-    const unparsedSearch = interaction.options.getString("search");
+    let unparsedSearch = interaction.options.getString("search") ?? "";
 
     // gets the content needed to play the video
     // Video used as a guide: https://www.youtube.com/watch?v=riyHsgI2IDs
@@ -25,8 +31,26 @@ export async function execute(interaction) {
 
     const tag = interaction.user.tag;
     const nickname = interaction.member.nickname || interaction.user.username;
+    const id = interaction.user.id;
 
     const tempQueue = [];
+
+    if (unparsedSearch.startsWith("slot: ") && unparsedSearch.length === 7) {
+        const slot = Number(unparsedSearch[6]);
+        if (1 <= slot && slot <= 5) {
+            const playlist = await prisma.playlist.findUnique({
+                where: {
+                    slot_userId: {
+                        slot: slot,
+                        userId: id,
+                    },
+                },
+            });
+            if (playlist.url.length !== 0) {
+                unparsedSearch = playlist.url;
+            }
+        }
+    }
 
     const isPlaylist = ytpl.validateID(unparsedSearch);
     const isUrl = ytdl.validateURL(unparsedSearch);

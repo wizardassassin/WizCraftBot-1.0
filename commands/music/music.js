@@ -57,6 +57,14 @@ export async function execute(interaction) {
     const id = interaction.guild.id;
     const hasQueue = guildQueue.has(id);
     const musicCommandName = interaction.options.getSubcommand();
+
+    if (musicCommandName === "save") {
+        const musicCommand = commands.get(musicCommandName);
+        if (!musicCommand) return;
+        await musicCommand.execute(interaction);
+        return;
+    }
+
     // Creates the queue
     if (!hasQueue) {
         if (musicCommandName !== "play") {
@@ -90,7 +98,7 @@ export async function execute(interaction) {
     interaction.queue = guildQueue.get(id);
 
     try {
-        musicCommand.execute(interaction);
+        await musicCommand.execute(interaction);
     } catch (error) {
         console.error(error);
         await interaction.editReply({

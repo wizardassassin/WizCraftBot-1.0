@@ -109,3 +109,7 @@ dist
 # Test files
 .test*
 test/
+
+# Database Files
+dev.db
+dev.db-journal

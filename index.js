@@ -7,6 +7,7 @@
 import "dotenv/config";
 import fs from "fs";
 import { Client, Collection, IntentsBitField } from "discord.js";
+import prisma from "#utils/db";
 
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
 
@@ -19,6 +20,9 @@ clientIntents.add(
 const client = new Client({
     intents: clientIntents,
 });
+
+// Imports database
+client.db = prisma;
 
 // Imports commands
 client.commands = new Collection();
@@ -57,3 +61,24 @@ for (const file of eventFiles) {
 client.componentCollectors = new Collection();
 
 client.login(token);
+
+let pushedOnce = false;
+
+function handleUserExit(signal) {
+    console.log({ Received: signal });
+    if (pushedOnce) {
+        console.log("Forcefully shutting down...");
+        process.exit(1);
+    }
+    pushedOnce = true;
+    console.log("Received Ctrl+C, gracefully shutting down...");
+    console.log("Press Ctrl+C again to forcefully shutdown.");
+    prisma.$disconnect().then(() => process.exit(0));
+}
+
+process.on("SIGINT", (code) => {
+    handleUserExit(code);
+});
+process.on("SIGTERM", (code) => {
+    handleUserExit(code);
+});
