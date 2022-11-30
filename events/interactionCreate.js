@@ -38,7 +38,7 @@ export async function execute(interaction) {
         // return;
     }
 
-    if (interaction.isSelectMenu()) {
+    if (interaction.isAnySelectMenu()) {
         console.log("Select Menu");
         // return;
     }

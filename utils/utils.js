@@ -182,12 +182,12 @@ export function secondsToTimestamp(seconds) {
  * @param {import("discord.js").Guild} guild
  */
 export async function getGuildInfo(guild) {
-    const owner = await guild.client.users.fetch(guild.ownerId);
+    const owner = await guild.fetchOwner();
     return {
         name: guild.name,
         id: guild.id,
         memberCount: guild.memberCount,
-        owner: owner.tag,
+        owner: owner.user.tag,
         ownerId: guild.ownerId,
         createdAt: guild.createdAt.toString(),
     };

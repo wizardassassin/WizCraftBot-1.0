@@ -14,9 +14,6 @@ export async function execute(client) {
         status: "online",
     });
 
-    console.log(`Ready! Logged in as ${client.user.tag}`);
-    console.log("Date:", client.readyAt.toString());
-
     const guilds = await Promise.all(
         (
             await client.guilds.fetch()
@@ -24,4 +21,9 @@ export async function execute(client) {
     );
     console.log("Servers:");
     console.log(guilds);
+
+    client.customCollectors.forEach((x) => x.start());
+
+    console.log(`Ready! Logged in as ${client.user.tag}`);
+    console.log("Date:", client.readyAt.toString());
 }
