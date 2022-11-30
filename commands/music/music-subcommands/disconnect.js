@@ -13,6 +13,6 @@ export async function execute(interaction) {
     // Hacky solution
     songs.length = 0;
     queue.forceSkip = true;
-    player.stop();
+    player.stop(true);
     await interaction.editReply(`Done.`);
 }

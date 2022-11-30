@@ -130,13 +130,17 @@ function createQueue(interaction, firstSongs) {
     const player = createAudioPlayer();
 
     connection.on("stateChange", (oldState, newState) => {
-        if (newState.status === VoiceConnectionStatus.Disconnected) {
-            guildQueue.delete(guild.id);
-            connection.destroy();
-        }
         console.log(
             `Connection transitioned from ${oldState.status} to ${newState.status}`
         );
+        if (newState.status === VoiceConnectionStatus.Disconnected) {
+            songs.length = 0;
+            queue.forceSkip = true;
+            player.stop(true);
+            // guildQueue.delete(guild.id);
+            // connection.destroy();
+            textChannel.send("Force disconnected.");
+        }
     });
 
     player.on("stateChange", (oldState, newState) => {
@@ -202,6 +206,9 @@ function playNextSong(queue) {
         return;
     }
     console.log(songs[0]);
+    textChannel
+        .send(`Now Playing "${songs[0].title}"`)
+        .catch((err) => console.err(err));
     // It sometimes doesn't work if the song length is too long
     let delay;
     const stream = ytdl(songs[0].url, formatOptions);
