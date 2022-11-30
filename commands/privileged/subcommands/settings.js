@@ -32,7 +32,8 @@ export async function execute(interaction) {
 
     if (!db_user) {
         if (action !== "enable") {
-            await interaction.reply("No user was found!");
+            await interaction.editReply("No user was found!");
+            return;
         }
         await prisma.user.create({
             data: {
