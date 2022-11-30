@@ -67,10 +67,19 @@ export async function execute(interaction) {
             where: {
                 id: id,
             },
+            select: {
+                isEnabled: true,
+                playlists: true,
+            },
         });
 
-        if (tmpUser === null) {
-            await createUser(id);
+        if (!tmpUser.isEnabled) {
+            await interaction.editReply("The user is disabled!");
+            return;
+        }
+
+        if (tmpUser.playlists.length === 0) {
+            await createPlaylists(id);
         }
 
         await prisma.playlist.update({
@@ -119,18 +128,17 @@ export async function execute(interaction) {
  *
  * @param {string} id The id
  */
-async function createUser(id) {
-    await prisma.user.create({
-        data: {
-            id: id,
-        },
-    });
+async function createPlaylists(id) {
     for (let i = 0; i < 5; i++) {
         await prisma.playlist.create({
             data: {
                 slot: i + 1,
                 url: "",
-                userId: id,
+                user: {
+                    connect: {
+                        id: id,
+                    },
+                },
             },
         });
     }
