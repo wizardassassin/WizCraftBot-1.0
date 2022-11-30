@@ -13,7 +13,11 @@ datasource db {
 model User {
   id        String     @id // Discord id
   createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  isEnabled Boolean    @default(false)
+  guildId   String
   playlists Playlist[]
+  presences Presence[]
 }
 
 model Playlist {
@@ -25,4 +29,20 @@ model Playlist {
   userId    String
 
   @@unique([slot, userId])
+}
+
+model Presence {
+  id            String   @id @default(uuid())
+  createdAt     DateTime // Can't have a default
+  updatedAt     DateTime @updatedAt
+  name          String
+  state         String?
+  details       String?
+  smallImageUrl String?
+  largeImageUrl String?
+  applicationId String
+  User          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+
+  @@unique([userId, applicationId, createdAt])
 }

@@ -43,6 +43,7 @@ export async function execute(interaction) {
         // return;
     }
 
+    // Might disable or remove the buttons if timed out
     if (interaction.isMessageComponent()) {
         if (!client.componentCollectors.has(interaction.message.id)) {
             console.log("Timed Out Message Component");
