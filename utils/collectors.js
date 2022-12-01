@@ -11,7 +11,7 @@ export const minToMs = 60000;
  */
 export function importCustomCollectors(client) {
     const collector = createTimeoutWrapper(
-        () => startPresenceCollector(client),
+        async () => await startPresenceCollector(client),
         minToMs * 1,
         "Presence Collector",
         true
