@@ -13,12 +13,12 @@ export function importExitHandler() {
     });
 
     // Windows
-    process.on("message", function (msg) {
-        // Loose equals
-        if (msg == "shutdown") {
-            handleUserExit(msg);
-        }
-    });
+    // process.on("message", function (msg) {
+    //     // Loose equals
+    //     if (msg == "shutdown") {
+    //         handleUserExit(msg);
+    //     }
+    // });
 
     process.on("SIGTERM", (code) => {
         handleUserExit(code);
