@@ -38,11 +38,12 @@ export async function execute(interaction) {
         // return;
     }
 
-    if (interaction.isSelectMenu()) {
+    if (interaction.isAnySelectMenu()) {
         console.log("Select Menu");
         // return;
     }
 
+    // Might disable or remove the buttons if timed out
     if (interaction.isMessageComponent()) {
         if (!client.componentCollectors.has(interaction.message.id)) {
             console.log("Timed Out Message Component");

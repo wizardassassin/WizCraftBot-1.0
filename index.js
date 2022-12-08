@@ -4,17 +4,24 @@
  * Following: https://discordjs.guide/
  */
 // import "./deploy-commands.js"; // dev
-import "dotenv/config";
 import fs from "fs";
 import { Client, Collection, IntentsBitField } from "discord.js";
 import prisma from "#utils/db";
+import { importExitHandler } from "#utils/setup";
+import { customCollectors, importCustomCollectors } from "#utils/collectors";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+importExitHandler();
 
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
 
 const clientIntents = new IntentsBitField();
 clientIntents.add(
     IntentsBitField.Flags.GuildVoiceStates,
-    IntentsBitField.Flags.Guilds
+    IntentsBitField.Flags.Guilds,
+    IntentsBitField.Flags.GuildPresences
 );
 
 const client = new Client({
@@ -60,25 +67,7 @@ for (const file of eventFiles) {
 // Adds Important Info
 client.componentCollectors = new Collection();
 
+importCustomCollectors(client);
+client.customCollectors = customCollectors;
+
 client.login(token);
-
-let pushedOnce = false;
-
-function handleUserExit(signal) {
-    console.log({ Received: signal });
-    if (pushedOnce) {
-        console.log("Forcefully shutting down...");
-        process.exit(1);
-    }
-    pushedOnce = true;
-    console.log("Received Ctrl+C, gracefully shutting down...");
-    console.log("Press Ctrl+C again to forcefully shutdown.");
-    prisma.$disconnect().then(() => process.exit(0));
-}
-
-process.on("SIGINT", (code) => {
-    handleUserExit(code);
-});
-process.on("SIGTERM", (code) => {
-    handleUserExit(code);
-});
