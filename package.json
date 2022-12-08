@@ -5,11 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run build && node .",
-    "build": "node deploy-commands.js",
-    "debug": "nodemon --exec \"node deploy-commands.js && node .\"",
-    "start": "pm2 start index.js --name \"WizCraftBot 1.0\" --log --time",
-    "stop": "pm2 stop \"WizCraftBot 1.0\"",
-    "delete": "pm2 delete \"WizCraftBot 1.0\"",
+    "build": "node deploy-commands.cjs",
+    "start": "pm2 start ecosystem.config.cjs",
+    "stop": "pm2 stop ecosystem.config.cjs",
+    "delete": "pm2 delete ecosystem.config.cjs",
     "restart": "npm stop && npm start",
     "reset": "npm run delete && npm install && npm run build && npm start"
   },
@@ -23,9 +22,9 @@
     "@discordjs/opus": "^0.9.0",
     "@discordjs/rest": "^1.4.0",
     "@discordjs/voice": "^0.14.0",
-    "@prisma/client": "^4.7.0",
+    "@prisma/client": "^4.7.1",
     "bufferutil": "^4.0.7",
-    "discord.js": "^14.7.0",
+    "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "erlpack": "github:discord/erlpack",
     "ffmpeg-static": "^5.1.0",
@@ -59,6 +58,6 @@
   },
   "homepage": "https://github.com/wizardassassin/WizCraftBot-1.0#readme",
   "devDependencies": {
-    "prisma": "^4.7.0"
+    "prisma": "^4.7.1"
   }
 }
