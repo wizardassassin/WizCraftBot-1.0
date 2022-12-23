@@ -82,12 +82,13 @@ async function storePresence(presence) {
     const id = presence.userId;
     // Is there a better way to do this?
     for (const activity of activities) {
+        const startTime = activity.timestamps?.start ?? Date.now();
         await prisma.presence.upsert({
             where: {
                 userId_applicationId_createdAt: {
                     userId: id,
                     applicationId: activity.applicationId,
-                    createdAt: activity.timestamps.start,
+                    createdAt: startTime,
                 },
             },
             update: {
@@ -101,7 +102,7 @@ async function storePresence(presence) {
                 name: activity.name,
                 state: activity.state,
                 details: activity.details,
-                createdAt: activity.timestamps.start,
+                createdAt: startTime,
                 smallImageUrl: activity.smallImageUrl,
                 largeImageUrl: activity.largeImageUrl,
                 applicationId: activity.applicationId,
