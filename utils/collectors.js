@@ -10,12 +10,14 @@ export const minToMs = 60000;
  * @param {import("discord.js").Client} client
  */
 export function importCustomCollectors(client) {
-    const collector = createTimeoutWrapper(
-        async () => await startPresenceCollector(client),
-        minToMs * 1,
-        "Presence Collector",
-        true
-    );
+    const collector = createTimeoutWrapper({
+        collectorWrapper: function () {
+            return startPresenceCollector.call(this, client);
+        },
+        interval: minToMs * 1,
+        name: "Presence Collector",
+        runOnReady: true,
+    });
     customCollectors.set("Presence Collector", collector);
 }
 
@@ -82,12 +84,13 @@ async function storePresence(presence) {
     const id = presence.userId;
     // Is there a better way to do this?
     for (const activity of activities) {
+        const startTime = activity.timestamps?.start ?? Date.now();
         await prisma.presence.upsert({
             where: {
                 userId_applicationId_createdAt: {
                     userId: id,
                     applicationId: activity.applicationId,
-                    createdAt: activity.timestamps.start,
+                    createdAt: startTime,
                 },
             },
             update: {
@@ -101,7 +104,7 @@ async function storePresence(presence) {
                 name: activity.name,
                 state: activity.state,
                 details: activity.details,
-                createdAt: activity.timestamps.start,
+                createdAt: startTime,
                 smallImageUrl: activity.smallImageUrl,
                 largeImageUrl: activity.largeImageUrl,
                 applicationId: activity.applicationId,
@@ -115,13 +118,42 @@ async function storePresence(presence) {
     }
 }
 
-// this
-export const createTimeout = (
+/**
+ * @typedef {Object} BaseTimeoutInput
+ * @property {() => Promise<void>} collectorWrapper Should bind to this (not an arrow function)
+ * @property {string} name
+ * @property {boolean?} runOnReady
+ * @property {number?} loggingLevel
+ */
+
+/**
+ * @typedef {Object} TimeoutObj
+ * @property {boolean} isRunning
+ * @property {Date} nextRun
+ * @property {NodeJS.Timeout} _timeout
+ * @property {boolean} _stopRunning
+ * @property {Promise<unknown>} _promise
+ * @property {() => Promise<void>} _collectorWrapper Binds to this
+ * @property {(value: unknown) => void} _res
+ * @property {(value: unknown) => void} _rej
+ * @property {() => void} start  Binds to this
+ * @property {() => Promise<unknown>} stop Binds to this
+ * @property {(logWrapper: () => void, logLevel: number) => void} log Binds to this
+ *
+ */
+
+/**
+ *
+ * @param {BaseTimeoutInput & {getInterval: () => number}} param0
+ * @returns {TimeoutObj}
+ */
+export const createTimeout = ({
     collectorWrapper,
     getInterval,
     name,
-    runOnReady = false
-) => ({
+    runOnReady = false,
+    loggingLevel = 1,
+}) => ({
     isRunning: null,
     nextRun: null,
     _timeout: null,
@@ -129,69 +161,104 @@ export const createTimeout = (
     _promise: null,
     _res: null,
     _rej: null,
+    _collectorWrapper: collectorWrapper, // this
     start() {
+        this.log(() => console.log("Starting", name), 3);
         const workerCallback = async () => {
-            console.log("Started", name);
-            console.time(name);
+            this.log(() => console.log("Started", name), 3);
+            this.log(() => console.time(name), 3);
             this.isRunning = true;
             try {
-                await collectorWrapper();
+                await this._collectorWrapper();
             } catch (error) {
                 console.error(error);
             }
             this.isRunning = false;
-            console.timeEnd(name);
+            this.log(() => console.timeEnd(name), 3);
             if (this._stopRunning) {
-                console.log("Stopped", name);
+                this.log(() => console.log("Stopped", name), 1);
                 this._res("Done");
                 return;
             }
             const waitTime = getInterval();
             this.nextRun = new Date(Date.now() + waitTime);
             this._timeout = setTimeout(workerCallback, waitTime);
+            this.log(() => console.log(`Next ${name}:`, this.nextRun), 3);
         };
         this._promise = new Promise((res, rej) => {
             this._res = res;
             this.rej = rej;
         });
         if (runOnReady) {
+            this.log(() => console.log(`First ${name} in`, 0, "seconds"), 1);
+            this.log(() => console.log(`First ${name}:`, new Date()), 1);
             workerCallback();
             return;
         }
         const waitTime = getInterval();
         this.nextRun = new Date(Date.now() + waitTime);
         this._timeout = setTimeout(workerCallback, waitTime);
-        this.nextRun;
+        this.log(
+            () => console.log(`First ${name} in`, waitTime / 1000, "seconds"),
+            1
+        );
+        this.log(() => console.log(`First ${name}:`, this.nextRun), 1);
     },
     async stop() {
+        this.log(() => console.log("Stopping", name), 3);
         this._stopRunning = true;
         clearInterval(this._timeout);
         if (!this.isRunning) {
-            console.log("Stopped", name);
+            this.log(() => console.log("Stopped", name), 1);
             return;
         }
-        console.log("Waiting for", name, "to finish...");
+        this.log(() => console.log("Waiting for", name, "to finish..."), 1);
         await this._promise;
+    },
+    log(logWrapper, logLevel) {
+        if (logLevel <= loggingLevel) {
+            logWrapper();
+        }
     },
 });
 
-export const createTimeoutWrapper = (
-    collectorWrapper,
-    interval,
-    name,
-    runOnReady = false
-) => createTimeout(collectorWrapper, () => interval, name, runOnReady);
-
-export const createClockTimeoutWrapper = (
+/**
+ *
+ * @param {BaseTimeoutInput & { interval: number; }} param0
+ * @returns {ReturnType<typeof createTimeout>}
+ */
+export const createTimeoutWrapper = ({
     collectorWrapper,
     interval,
     name,
     runOnReady = false,
-    startTime = Date.now()
-) =>
-    createTimeout(
+    loggingLevel = 1,
+}) =>
+    createTimeout({
         collectorWrapper,
-        () => interval - ((Date.now() - startTime) % interval),
+        getInterval: () => interval,
         name,
-        runOnReady
-    );
+        runOnReady,
+        loggingLevel,
+    });
+
+/**
+ *
+ * @param {BaseTimeoutInput & { interval: number; startTime?: number; } } param0
+ * @returns {ReturnType<typeof createTimeout>}
+ */
+export const createClockTimeoutWrapper = ({
+    collectorWrapper,
+    interval,
+    name,
+    runOnReady = false,
+    loggingLevel = 1,
+    startTime = Date.now(),
+}) =>
+    createTimeout({
+        collectorWrapper,
+        getInterval: () => interval - ((Date.now() - startTime) % interval),
+        name,
+        runOnReady,
+        loggingLevel,
+    });

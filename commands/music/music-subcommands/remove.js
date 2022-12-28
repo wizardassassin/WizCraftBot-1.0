@@ -23,7 +23,10 @@ export async function execute(interaction) {
         return;
     }
     if (index === 0) {
+        interaction.queue.forceSkip = true;
         player.stop();
+        await interaction.editReply(`Removed "${removed[0].title}"`);
+        return;
     }
     const removed = songs.splice(index, 1);
     await interaction.editReply(`Removed "${removed[0].title}"`);
