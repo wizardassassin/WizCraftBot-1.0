@@ -139,7 +139,9 @@ function createQueue(interaction, firstSongs) {
             player.stop(true);
             // guildQueue.delete(guild.id);
             // connection.destroy();
-            textChannel.send("Force disconnected.");
+            textChannel
+                .send("Force disconnected.")
+                .catch((err) => console.error(err));
         }
     });
 
