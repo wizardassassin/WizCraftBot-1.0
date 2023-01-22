@@ -4,7 +4,6 @@ import {
     ButtonStyle,
     EmbedBuilder,
     SlashCommandSubcommandBuilder,
-    userMention,
 } from "discord.js";
 
 export const data = new SlashCommandSubcommandBuilder()
@@ -92,6 +91,9 @@ function createEmbed(interaction, songs, queue, start) {
     const currentSong = songs[0];
     const nextSongs = songs.slice(startIndex, endIndex1);
     const nextSongs2 = songs.slice(endIndex1, endIndex2);
+    const page1 = start / 5 + Math.sign(nextSongs.length);
+    const page2 = page1 + Math.sign(nextSongs2.length);
+    const pages = Math.ceil((songs.length - 1) / 5);
     const embed = new EmbedBuilder()
         .setTitle("Queue for " + interaction.guild.name)
         .addFields({
@@ -100,9 +102,7 @@ function createEmbed(interaction, songs, queue, start) {
         })
         .setTimestamp()
         .setFooter({
-            text: `Page ${start / 5 + 1}/${Math.floor(
-                (songs.length - 1) / 5
-            )}  •  Have a nice day!`,
+            text: `Page ${page1}-${page2}/${pages}  •  Have a nice day!`,
         });
 
     if (nextSongs.length) {
