@@ -87,10 +87,13 @@ export async function execute(interaction) {
             ephemeral: true,
         };
         if (interaction.replied) {
+            console.log("Follow Up");
             await interaction.followUp(response);
         } else if (interaction.deferred) {
+            console.log("Edit Reply");
             await interaction.editReply(response);
         } else {
+            console.log("Reply");
             await interaction.reply(response);
         }
     }
