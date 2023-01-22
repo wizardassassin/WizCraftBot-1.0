@@ -84,7 +84,7 @@ async function storePresence(presence) {
     const id = presence.userId;
     // Is there a better way to do this?
     for (const activity of activities) {
-        const startTime = activity.timestamps?.start ?? Date.now();
+        const startTime = activity.timestamps?.start ?? new Date();
         await prisma.presence.upsert({
             where: {
                 userId_applicationId_createdAt: {
