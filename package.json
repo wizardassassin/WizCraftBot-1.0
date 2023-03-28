@@ -20,23 +20,23 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.9.0",
-    "@discordjs/rest": "^1.5.0",
-    "@discordjs/voice": "^0.14.0",
-    "@prisma/client": "^4.8.0",
+    "@discordjs/rest": "^1.6.0",
+    "@discordjs/voice": "^0.15.0",
+    "@prisma/client": "^4.11.0",
     "bufferutil": "^4.0.7",
-    "discord.js": "^14.7.1",
+    "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
     "erlpack": "github:discord/erlpack",
     "ffmpeg-static": "^5.1.0",
     "lodash": "^4.17.21",
-    "minecraft-server-util": "^5.3.1",
-    "node-fetch": "^3.3.0",
-    "sodium-native": "^3.4.1",
-    "utf-8-validate": "^5.0.10",
+    "minecraft-server-util": "^5.4.1",
+    "node-fetch": "^3.3.1",
+    "sodium-native": "^4.0.1",
+    "utf-8-validate": "^6.0.3",
     "ytdl-core": "^4.11.2",
     "ytpl": "^2.3.0",
     "ytsr": "^3.8.0",
-    "zlib-sync": "^0.1.7"
+    "zlib-sync": "^0.1.8"
   },
   "repository": {
     "type": "git",
@@ -58,6 +58,6 @@
   },
   "homepage": "https://github.com/wizardassassin/WizCraftBot-1.0#readme",
   "devDependencies": {
-    "prisma": "^4.8.0"
+    "prisma": "^4.11.0"
   }
 }
