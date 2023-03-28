@@ -149,6 +149,14 @@ function createQueue(interaction, firstSongs) {
         console.log(
             `Audio player transitioned from ${oldState.status} to ${newState.status}`
         );
+        if (newState.status === AudioPlayerStatus.AutoPaused) {
+            songs.length = 0;
+            queue.forceSkip = true;
+            player.stop(true);
+            textChannel
+                .send("Random AutoPause?")
+                .catch((err) => console.error(err));
+        }
     });
 
     const songs = [...firstSongs];
