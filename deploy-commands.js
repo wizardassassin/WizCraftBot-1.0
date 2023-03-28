@@ -25,7 +25,9 @@ for (const folder of commandsFolders) {
 const rest = new REST({ version: "10" }).setToken(token);
 
 try {
-    console.log("Started refreshing application (/) commands.");
+    console.log(
+        `Started refreshing ${commands.length} application (/) commands.`
+    );
 
     await rest.put(
         Routes.applicationGuildCommands(clientId, guildId),
@@ -36,7 +38,9 @@ try {
     );
 
     // console.log("Successfully registered application commands.");
-    console.log("Successfully reloaded application (/) commands.");
+    console.log(
+        `Successfully reloaded ${data.length} application (/) commands.`
+    );
 } catch (error) {
     console.error(error);
 }
