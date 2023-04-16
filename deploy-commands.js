@@ -1,8 +1,11 @@
 // Deploys slash commands to a server for ease of testing
 import fs from "fs";
-import "dotenv/config";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord.js";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
 const clientId = process.env.CLIENT_ID_WIZCRAFTBOT_V1;
 const guildId = process.env.GUILD_ID_WIZCRAFTBOT_V1;
 const token = process.env.DISCORD_BOT_WIZCRAFTBOT_V1;
@@ -29,13 +32,14 @@ try {
         `Started refreshing ${commands.length} application (/) commands.`
     );
 
-    await rest.put(
-        Routes.applicationGuildCommands(clientId, guildId),
-        // Routes.applicationCommands(clientId),
-        {
-            body: commands,
-        }
-    );
+    const route =
+        process.env.NODE_ENV === "production"
+            ? Routes.applicationCommands(clientId)
+            : Routes.applicationGuildCommands(clientId, guildId);
+
+    await rest.put(route, {
+        body: commands,
+    });
 
     // console.log("Successfully registered application commands.");
     console.log(
