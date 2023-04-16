@@ -37,7 +37,7 @@ try {
             ? Routes.applicationCommands(clientId)
             : Routes.applicationGuildCommands(clientId, guildId);
 
-    await rest.put(route, {
+    const data = await rest.put(route, {
         body: commands,
     });
 
