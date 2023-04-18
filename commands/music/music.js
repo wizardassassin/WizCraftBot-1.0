@@ -58,7 +58,7 @@ export async function execute(interaction) {
     const hasQueue = guildQueue.has(id);
     const musicCommandName = interaction.options.getSubcommand();
 
-    if (musicCommandName === "save") {
+    if (musicCommandName === "save" || musicCommandName === "lyrics") {
         const musicCommand = commands.get(musicCommandName);
         if (!musicCommand) return;
         await musicCommand.execute(interaction);
