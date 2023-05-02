@@ -1,6 +1,7 @@
 import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import fetch from "node-fetch";
-import { getPingColor, Timer } from "#utils/utils.js";
+import { getPingColor } from "#utils/utils.js";
+import { Timer } from "#utils/timer.js";
 
 export const data = new SlashCommandSubcommandBuilder()
     .setName("yesno")

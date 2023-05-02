@@ -1,12 +1,7 @@
 import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import fetch from "node-fetch";
-import {
-    getPingColor,
-    URLWrapper,
-    Timer,
-    getReplyTemplate,
-} from "#utils/utils.js";
-
+import { getPingColor, URLWrapper, getReplyTemplate } from "#utils/utils.js";
+import { Timer } from "#utils/timer.js";
 const data = new SlashCommandSubcommandBuilder()
     .setName("imagelib")
     .setDescription("Image and Video Library (also audio).")

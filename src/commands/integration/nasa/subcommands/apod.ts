@@ -1,6 +1,7 @@
 import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import fetch from "node-fetch";
-import { getPingColor, URLWrapper, Timer } from "#utils/utils.js";
+import { getPingColor, URLWrapper } from "#utils/utils.js";
+import { Timer } from "#utils/timer.js";
 import ytdl from "ytdl-core";
 
 const data = new SlashCommandSubcommandBuilder()

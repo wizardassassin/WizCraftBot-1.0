@@ -1,6 +1,6 @@
 import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import mcServerStatus from "minecraft-server-util";
-import { Timer } from "#utils/utils.js";
+import { Timer } from "#utils/timer.js";
 
 const data = new SlashCommandSubcommandBuilder()
     .setName("status")
