@@ -6,7 +6,7 @@ import {
     ChatInputCommandInteraction,
 } from "discord.js";
 import { PrismaClient } from "@prisma/client";
-import { customCollectors } from "#utils/collectors.js";
+import { CronScheduler } from "#utils/cronScheduler.ts";
 
 interface GenericCommandModule {
     readonly data:
@@ -33,7 +33,8 @@ declare module "discord.js" {
     export interface Client {
         commands: Collection<string, CommandModule>;
         componentCollectors: Collection<string, string>;
-        customCollectors: typeof customCollectors;
-        db: PrismaClient;
+        cronScheduler: CronScheduler;
+        prisma: PrismaClient;
+        storage: Collection<string, any>;
     }
 }

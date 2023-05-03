@@ -1,4 +1,3 @@
-import prisma from "#utils/db.js";
 import { getPingColor, getReplyTemplate, URLWrapper } from "#utils/utils.js";
 import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import ytdl from "ytdl-core";
@@ -64,7 +63,7 @@ export async function execute(interaction: ModifiedInteraction) {
             return;
         }
 
-        const tmpUser = await prisma.user.findUnique({
+        const tmpUser = await interaction.client.prisma.user.findUnique({
             where: {
                 id: id,
             },
@@ -80,10 +79,10 @@ export async function execute(interaction: ModifiedInteraction) {
         }
 
         if (tmpUser.playlists.length === 0) {
-            await createPlaylists(id);
+            await createPlaylists(interaction, id);
         }
 
-        await prisma.playlist.update({
+        await interaction.client.prisma.playlist.update({
             where: {
                 slot_userId: {
                     slot: slot,
@@ -96,7 +95,7 @@ export async function execute(interaction: ModifiedInteraction) {
         });
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await interaction.client.prisma.user.findUnique({
         where: {
             id: id,
         },
@@ -129,9 +128,9 @@ export async function execute(interaction: ModifiedInteraction) {
  *
  * @param {string} id The id
  */
-async function createPlaylists(id: string) {
+async function createPlaylists(interaction: ModifiedInteraction, id: string) {
     for (let i = 0; i < 5; i++) {
-        await prisma.playlist.create({
+        await interaction.client.prisma.playlist.create({
             data: {
                 slot: i + 1,
                 url: "",

@@ -1,4 +1,3 @@
-import prisma from "#utils/db.js";
 import { secondsToTimestamp } from "#utils/utils.js";
 import { SlashCommandSubcommandBuilder } from "discord.js";
 import ytdl from "ytdl-core";
@@ -40,14 +39,15 @@ export async function execute(interaction: ModifiedInteraction) {
     if (unparsedSearch.startsWith("slot: ") && unparsedSearch.length === 7) {
         const slot = Number(unparsedSearch[6]);
         if (1 <= slot && slot <= 5) {
-            const playlist = await prisma.playlist.findUnique({
-                where: {
-                    slot_userId: {
-                        slot: slot,
-                        userId: id,
+            const playlist =
+                await interaction.client.prisma.playlist.findUnique({
+                    where: {
+                        slot_userId: {
+                            slot: slot,
+                            userId: id,
+                        },
                     },
-                },
-            });
+                });
             if (playlist.url.length !== 0) {
                 unparsedSearch = playlist.url;
             }

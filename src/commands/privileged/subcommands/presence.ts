@@ -1,4 +1,3 @@
-import prisma from "#utils/db.js";
 import { getPingColor, getReplyTemplate } from "#utils/utils.js";
 import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 
@@ -17,7 +16,7 @@ export async function execute(
 ) {
     const user = interaction.options.getUser("user") || interaction.user;
     const id = user.id;
-    const db_user = await prisma.user.findUnique({
+    const db_user = await interaction.client.prisma.user.findUnique({
         where: {
             id: id,
         },

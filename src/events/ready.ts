@@ -1,5 +1,5 @@
 import { getGuildInfo } from "#utils/utils.js";
-import { ActivityType, Events } from "discord.js";
+import { Events } from "discord.js";
 
 export const name = Events.ClientReady;
 export const once = true;
@@ -9,10 +9,7 @@ export const once = true;
  * @param {import("discord.js").Client<true>} client
  */
 export async function execute(client: import("discord.js").Client<true>) {
-    client.user.setPresence({
-        activities: [{ name: "Minecraft", type: ActivityType.Competing }],
-        status: "online",
-    });
+    client.user.setPresence(client.storage.get("presence"));
 
     const guilds = await Promise.all(
         (
@@ -22,8 +19,7 @@ export async function execute(client: import("discord.js").Client<true>) {
     console.log("Servers:");
     console.log(guilds);
 
-    client.customCollectors.forEach((x) => x.start());
+    client.cronScheduler.start();
 
     console.log(`Ready! Logged in as ${client.user.tag}`);
-    console.log("Date:", client.readyAt.toString());
 }

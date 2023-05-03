@@ -1,9 +1,10 @@
-import { customCollectors } from "./collectors.js";
-
 let pushedOnce = false;
 
-export const hasPushed = () => pushedOnce;
-export const setPushed = (val: boolean) => (pushedOnce = val);
+const events: Array<() => Promise<void>> = [];
+
+export function addExitEvent(stopEvent: () => Promise<void>) {
+    events.push(stopEvent);
+}
 
 export function importExitHandler() {
     // Linux
@@ -36,6 +37,6 @@ export async function handleUserExit(signal: NodeJS.Signals | string) {
     pushedOnce = true;
     console.log("Received Ctrl+C, gracefully shutting down...");
     console.log("Press Ctrl+C again to forcefully shutdown.");
-    await Promise.all(customCollectors.map(async (x) => await x.stop()));
+    await Promise.all(events.map((event) => event()));
     process.exit(0);
 }

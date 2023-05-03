@@ -1,4 +1,3 @@
-import prisma from "#utils/db.js";
 import { SlashCommandSubcommandBuilder } from "discord.js";
 
 export const data = new SlashCommandSubcommandBuilder()
@@ -19,12 +18,14 @@ export const data = new SlashCommandSubcommandBuilder()
  *
  * @param {import("discord.js").ChatInputCommandInteraction} interaction
  */
-export async function execute(interaction) {
+export async function execute(
+    interaction: import("discord.js").ChatInputCommandInteraction
+) {
     const id = interaction.user.id;
     const guildId = interaction.guildId;
     const action = interaction.options.getString("action") || "delete";
 
-    let db_user = await prisma.user.findUnique({
+    let db_user = await interaction.client.prisma.user.findUnique({
         where: {
             id: id,
         },
@@ -35,7 +36,7 @@ export async function execute(interaction) {
             await interaction.editReply("No user was found!");
             return;
         }
-        await prisma.user.create({
+        await interaction.client.prisma.user.create({
             data: {
                 id: id,
                 isEnabled: true,
@@ -46,7 +47,7 @@ export async function execute(interaction) {
         return;
     }
     if (action === "delete") {
-        await prisma.user.delete({
+        await interaction.client.prisma.user.delete({
             where: {
                 id: id,
             },
@@ -55,7 +56,7 @@ export async function execute(interaction) {
         return;
     }
     if (action === "enable") {
-        await prisma.user.update({
+        await interaction.client.prisma.user.update({
             where: {
                 id: id,
             },
@@ -68,7 +69,7 @@ export async function execute(interaction) {
         return;
     }
     if (action === "disable") {
-        await prisma.user.update({
+        await interaction.client.prisma.user.update({
             where: {
                 id: id,
             },

@@ -5,15 +5,19 @@
  */
 // import "./deploy-commands.js"; // dev
 import fs from "fs";
-import { Client, Collection, IntentsBitField } from "discord.js";
-import prisma from "./utils/db.js";
-import { importExitHandler } from "./utils/setup.js";
 import {
-    customCollectors,
-    importCustomCollectors,
-} from "./utils/collectors.js";
+    ActivityType,
+    Client,
+    Collection,
+    IntentsBitField,
+    PresenceData,
+} from "discord.js";
+import { PrismaClient } from "@prisma/client";
+import { addExitEvent, importExitHandler } from "./utils/setup.js";
 import * as dotenv from "dotenv";
 import { CommandModule } from "types/common/discord.js";
+import { CronScheduler } from "#utils/cronScheduler.js";
+import { addCronJobs } from "#utils/cronJobs.js";
 
 dotenv.config();
 
@@ -33,7 +37,8 @@ const client = new Client({
 });
 
 // Imports database
-client.db = prisma;
+const prisma = new PrismaClient();
+client.prisma = prisma;
 
 // Imports commands
 client.commands = new Collection<string, CommandModule>();
@@ -71,7 +76,17 @@ for (const file of eventFiles) {
 // Adds Important Info
 client.componentCollectors = new Collection<string, string>();
 
-importCustomCollectors(client);
-client.customCollectors = customCollectors;
+client.storage = new Collection();
+
+client.storage.set("presence", {
+    activities: [{ name: "Minecraft", type: ActivityType.Competing }],
+    status: "online",
+} as PresenceData);
+
+client.cronScheduler = new CronScheduler(client);
+
+addCronJobs(client.cronScheduler);
+
+addExitEvent(() => client.cronScheduler.stop());
 
 client.login(token);
