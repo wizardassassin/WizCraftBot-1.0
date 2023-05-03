@@ -17,7 +17,9 @@ const cwd = dirname(fileURLToPath(import.meta.url));
 const commands = [];
 const commandsFolders = fs
     .readdirSync(cwd + "/commands")
-    .filter((folder) => fs.lstatSync(`./commands/${folder}`).isDirectory());
+    .filter((folder) =>
+        fs.lstatSync(cwd + `/commands/${folder}`).isDirectory()
+    );
 for (const folder of commandsFolders) {
     const commandFiles = fs
         .readdirSync(cwd + `/commands/${folder}`)
