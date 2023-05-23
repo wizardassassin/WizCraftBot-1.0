@@ -10,8 +10,11 @@ export async function addCronJobs(scheduler: CronScheduler) {
 }
 
 async function checkStatus(client: Client) {
-    if (client.user.presence.activities.length === 0) {
-        console.error("Client presence was reset.");
+    const wasReset = client.user.presence.activities.length === 0;
+    await client.user.fetch();
+    const wasReset2 = client.user.presence.activities.length === 0;
+    if (wasReset || wasReset2) {
+        console.error("Client presence was reset", wasReset, wasReset2);
         client.user.setPresence(client.storage.get("presence"));
     }
 }

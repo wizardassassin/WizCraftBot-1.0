@@ -9,7 +9,7 @@ export const once = true;
  * @param {import("discord.js").Client<true>} client
  */
 export async function execute(client: import("discord.js").Client<true>) {
-    client.user.setPresence(client.storage.get("presence"));
+    // client.user.setPresence(client.storage.get("presence"));
 
     const guilds = await Promise.all(
         (

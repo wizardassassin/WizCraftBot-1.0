@@ -34,6 +34,10 @@ clientIntents.add(
 
 const client = new Client({
     intents: clientIntents,
+    presence: {
+        activities: [{ name: "Minecraft", type: ActivityType.Competing }],
+        status: "online",
+    },
 });
 
 // Imports database
