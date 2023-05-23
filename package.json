@@ -25,7 +25,7 @@
     "@discordjs/opus": "^0.9.0",
     "@discordjs/rest": "^1.7.1",
     "@discordjs/voice": "^0.16.0",
-    "@prisma/client": "^4.13.0",
+    "@prisma/client": "^4.14.1",
     "bufferutil": "^4.0.7",
     "discord.js": "^14.11.0",
     "dotenv": "^16.0.3",
@@ -64,6 +64,6 @@
   },
   "homepage": "https://github.com/wizardassassin/WizCraftBot-1.0#readme",
   "devDependencies": {
-    "prisma": "^4.13.0"
+    "prisma": "^4.14.1"
   }
 }
