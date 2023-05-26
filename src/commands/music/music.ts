@@ -189,6 +189,9 @@ function createQueue(interaction: ModifiedInteraction, firstSongs: any[]) {
     connection.subscribe(player);
 
     player.on("error", (error) => {
+        textChannel
+            .send(`Error Playing Song: "${queue.songs[0].title}"`)
+            .catch((err) => console.error(err));
         console.error(error);
     });
 
@@ -258,11 +261,16 @@ function playNextSong(queue: {
         // console.log(videoFormat);
     });
     let streamError = false;
+    stream.on("error", (error) => {
+        // console.error(error);
+    });
     stream.on("progress", (length, downloaded, totallength) => {
         if (Number.isNaN(totallength) && !streamError) {
             streamError = true;
             console.error("Error PLaying Song:", songs[0].url);
-            textChannel.send(`Error Playing "${songs[0].title}"`);
+            textChannel
+                .send(`Error Playing "${songs[0].title}"`)
+                .catch((err: any) => console.error(err));
             queue.forceSkip = true;
             player.stop(true);
             // modifyCurrentSong(queue);
