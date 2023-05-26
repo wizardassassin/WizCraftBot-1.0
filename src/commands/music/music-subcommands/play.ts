@@ -56,6 +56,7 @@ export async function execute(interaction: ModifiedInteraction) {
 
     const isPlaylist = ytpl.validateID(unparsedSearch);
     const isUrl = ytdl.validateURL(unparsedSearch);
+    const isID = ytdl.validateID(unparsedSearch);
     if (isPlaylist) {
         const playlist = await ytpl(unparsedSearch);
         const videoInfos = playlist.items.map((item) => {
@@ -78,7 +79,7 @@ export async function execute(interaction: ModifiedInteraction) {
             };
         });
         tempQueue.push(...videoInfos);
-    } else if (isUrl) {
+    } else if (isUrl || isID) {
         const info = await ytdl.getBasicInfo(unparsedSearch);
         const thumbnails = info.videoDetails.thumbnails;
 
