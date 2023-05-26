@@ -8,7 +8,9 @@ import {
 import fs from "fs";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import ytdl from "ytdl-core";
+// import ytdl from "ytdl-core";
+import ytdl from "@distube/ytdl-core";
+
 import {
     AudioPlayerStatus,
     StreamType,
