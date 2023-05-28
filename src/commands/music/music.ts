@@ -22,8 +22,11 @@ import {
     VoiceConnection,
 } from "@discordjs/voice";
 import { SubcommandModule } from "types/common/discord.js";
+import { AudioResource } from "@discordjs/voice";
 
-const guildQueue = new Collection<string, ReturnType<typeof createQueue>>();
+type Queue = ReturnType<typeof createQueue>;
+
+const guildQueue = new Collection<string, Queue>();
 
 // Copied from api.js
 const data = new SlashCommandBuilder()
@@ -46,7 +49,7 @@ export { data };
 
 export interface ModifiedInteraction extends ChatInputCommandInteraction {
     member: GuildMember;
-    queue: ReturnType<typeof createQueue>;
+    queue: Queue;
 }
 
 export async function execute(interaction: ModifiedInteraction) {
@@ -180,6 +183,7 @@ function createQueue(interaction: ModifiedInteraction, firstSongs: any[]) {
         textChannel,
         connection,
         player,
+        resource: null as AudioResource<null>,
         songs,
         repeatSong: false,
         loopQueue: false,
@@ -205,17 +209,7 @@ function createQueue(interaction: ModifiedInteraction, firstSongs: any[]) {
     return queue;
 }
 
-function modifyCurrentSong(queue: {
-    voiceChannel?: any;
-    guild?: any;
-    textChannel?: any;
-    connection?: VoiceConnection;
-    player?: AudioPlayer;
-    songs?: any;
-    repeatSong?: any;
-    loopQueue?: any;
-    forceSkip: any;
-}) {
+function modifyCurrentSong(queue: Queue) {
     const { songs, repeatSong, loopQueue, forceSkip } = queue;
 
     const song = songs.shift();
@@ -230,17 +224,7 @@ function modifyCurrentSong(queue: {
     }
 }
 
-function playNextSong(queue: {
-    voiceChannel?: any;
-    guild?: any;
-    textChannel?: any;
-    connection?: any;
-    player?: any;
-    songs?: any;
-    repeatSong?: boolean;
-    loopQueue?: boolean;
-    forceSkip?: any;
-}) {
+function playNextSong(queue: Queue) {
     const { guild, textChannel, connection, player, songs } = queue;
 
     // Deleting the queue
@@ -289,4 +273,5 @@ function playNextSong(queue: {
     // resource.volume.setVolume(1);
     // console.log(resource.volume.volume);
     player.play(resource);
+    queue.resource = resource;
 }
