@@ -1,4 +1,8 @@
-import { Collection, SlashCommandBuilder } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    Collection,
+    SlashCommandBuilder,
+} from "discord.js";
 import fs from "fs";
 import { dirname } from "path";
 import { SubcommandGroupModule } from "types/common/discord.js";
@@ -30,13 +34,7 @@ for (const subcommandGroupFolder of subcommandGroupFolders) {
 
 export { data };
 
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
-export async function execute(
-    interaction: import("discord.js").ChatInputCommandInteraction
-) {
+export async function execute(interaction: ChatInputCommandInteraction) {
     const subcommandGroupName = interaction.options.getSubcommandGroup();
     const subcommandGroup = subcommandGroups.get(subcommandGroupName);
 

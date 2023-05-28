@@ -16,10 +16,6 @@ export const data = new SlashCommandSubcommandBuilder()
             .setRequired(true)
     );
 
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
 export async function execute(interaction: ModifiedInteraction) {
     // Playlist? Video? Query?
     let unparsedSearch = interaction.options.getString("search") ?? "";

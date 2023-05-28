@@ -1,15 +1,14 @@
-import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    EmbedBuilder,
+    SlashCommandBuilder,
+} from "discord.js";
 
 export const data = new SlashCommandBuilder()
     .setName("server")
     .setDescription("Replies with server info!");
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
-export async function execute(
-    interaction: import("discord.js").ChatInputCommandInteraction
-) {
+
+export async function execute(interaction: ChatInputCommandInteraction) {
     let owner = await interaction.guild.members.fetch(
         interaction.guild.ownerId
     );

@@ -1,4 +1,8 @@
-import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    EmbedBuilder,
+    SlashCommandSubcommandBuilder,
+} from "discord.js";
 import fetch from "node-fetch";
 import { getPingColor } from "#utils/utils.js";
 import { Timer } from "#utils/timer.js";
@@ -39,11 +43,7 @@ export const data = new SlashCommandSubcommandBuilder()
             )
     );
 
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
-export async function execute(interaction) {
+export async function execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply();
 
     const type = interaction.options.getString("type") || "trivia";

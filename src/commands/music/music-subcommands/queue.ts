@@ -10,10 +10,7 @@ import { ModifiedInteraction } from "../music.js";
 export const data = new SlashCommandSubcommandBuilder()
     .setName("queue")
     .setDescription("Replies with the current server queue.");
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
+
 export async function execute(interaction: ModifiedInteraction) {
     // /**@type {Array}*/
     const { queue } = interaction;

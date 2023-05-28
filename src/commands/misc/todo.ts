@@ -1,13 +1,15 @@
-import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    EmbedBuilder,
+    SlashCommandBuilder,
+} from "discord.js";
 
 export const data = new SlashCommandBuilder()
     .setName("todo")
     .setDescription(
         "Replies with all the things I need or want to do with the bot."
     );
-export async function execute(
-    interaction: import("discord.js").ChatInputCommandInteraction
-) {
+export async function execute(interaction: ChatInputCommandInteraction) {
     const embed = new EmbedBuilder()
         .setTitle("TODO")
         .setDescription(

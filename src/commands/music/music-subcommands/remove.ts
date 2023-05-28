@@ -10,10 +10,7 @@ export const data = new SlashCommandSubcommandBuilder()
             .setDescription("The position of the song in the queue.")
             .setRequired(true)
     );
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
+
 export async function execute(interaction: ModifiedInteraction) {
     const { queue } = interaction;
     const { songs, player } = queue;

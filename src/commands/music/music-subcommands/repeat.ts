@@ -26,12 +26,6 @@ export const data = new SlashCommandSubcommandBuilder()
             )
     );
 
-/**
- *
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- *
- */
 export async function execute(interaction: ModifiedInteraction) {
     const scope = interaction.options.getString("scope") ?? "song";
     const repeat = interaction.options.getString("repeat") ?? "toggle";

@@ -1,4 +1,8 @@
-import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    EmbedBuilder,
+    SlashCommandSubcommandBuilder,
+} from "discord.js";
 import fetch from "node-fetch";
 import { getPingColor } from "#utils/utils.js";
 import { Timer } from "#utils/timer.js";
@@ -7,13 +11,7 @@ export const data = new SlashCommandSubcommandBuilder()
     .setName("yesno")
     .setDescription("Calls the Yes No API.");
 
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
-export async function execute(
-    interaction: import("discord.js").ChatInputCommandInteraction
-) {
+export async function execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply();
 
     const timer = new Timer();

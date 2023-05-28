@@ -1,4 +1,8 @@
-import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    EmbedBuilder,
+    SlashCommandSubcommandBuilder,
+} from "discord.js";
 import mcServerStatus from "minecraft-server-util";
 import { Timer } from "#utils/timer.js";
 
@@ -35,13 +39,7 @@ const options = {
     enableSRV: true,
 };
 
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
-export async function execute(
-    interaction: import("discord.js").ChatInputCommandInteraction
-) {
+export async function execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply();
 
     // TODO: Make sure to parse input

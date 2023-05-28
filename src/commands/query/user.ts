@@ -1,4 +1,8 @@
-import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    EmbedBuilder,
+    SlashCommandBuilder,
+} from "discord.js";
 
 export const data = new SlashCommandBuilder()
     .setName("user")
@@ -6,13 +10,8 @@ export const data = new SlashCommandBuilder()
     .addUserOption((option) =>
         option.setName("user").setDescription("User to get information about.")
     );
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
-export async function execute(
-    interaction: import("discord.js").ChatInputCommandInteraction
-) {
+
+export async function execute(interaction: ChatInputCommandInteraction) {
     let user = interaction.options.getUser("user") || interaction.user;
     let guildMember = await interaction.guild.members.fetch(user.id);
     // let guildMember = await interaction.client.users.fetch(user.id);

@@ -1,12 +1,8 @@
-import { Events } from "discord.js";
+import { Events, Interaction } from "discord.js";
 
 export const name = Events.InteractionCreate;
 
-/**
- *
- * @param {import("discord.js").Interaction} interaction
- */
-export async function execute(interaction: import("discord.js").Interaction) {
+export async function execute(interaction: Interaction) {
     const { client } = interaction;
     console.log(
         `${interaction.user.tag} in ${interaction.guild?.name} | #${interaction.channel?.name} triggered an interaction.`

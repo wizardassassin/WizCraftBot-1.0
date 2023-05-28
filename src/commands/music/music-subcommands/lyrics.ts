@@ -1,5 +1,9 @@
 import { URLWrapper } from "#utils/utils.js";
-import { SlashCommandSubcommandBuilder, codeBlock } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    SlashCommandSubcommandBuilder,
+    codeBlock,
+} from "discord.js";
 import { parse } from "node-html-parser";
 
 export const data = new SlashCommandSubcommandBuilder()
@@ -12,13 +16,7 @@ export const data = new SlashCommandSubcommandBuilder()
             .setRequired(true)
     );
 
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
-export async function execute(
-    interaction: import("discord.js").ChatInputCommandInteraction
-) {
+export async function execute(interaction: ChatInputCommandInteraction) {
     const query = interaction.options.getString("query");
     const res1 = await fetch(
         URLWrapper("https://api.genius.com/search", {

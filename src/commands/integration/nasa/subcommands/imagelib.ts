@@ -1,4 +1,8 @@
-import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    EmbedBuilder,
+    SlashCommandSubcommandBuilder,
+} from "discord.js";
 import fetch from "node-fetch";
 import { getPingColor, URLWrapper, getReplyTemplate } from "#utils/utils.js";
 import { Timer } from "#utils/timer.js";
@@ -14,13 +18,7 @@ const data = new SlashCommandSubcommandBuilder()
 
 export { data };
 
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
-export async function execute(
-    interaction: import("discord.js").ChatInputCommandInteraction
-) {
+export async function execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply();
 
     const query = interaction.options.getString("query") || "milky way";

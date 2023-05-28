@@ -1,3 +1,4 @@
+import { ClientUser, EmbedBuilder, Guild } from "discord.js";
 import fetch from "node-fetch";
 
 /**
@@ -138,11 +139,7 @@ export function secondsToTimestamp(seconds: number) {
     return `${hoursFormat}:${retStr}`;
 }
 
-/**
- *
- * @param {import("discord.js").Guild} guild
- */
-export async function getGuildInfo(guild: import("discord.js").Guild) {
+export async function getGuildInfo(guild: Guild) {
     const owner = await guild.fetchOwner();
     return {
         name: guild.name,
@@ -154,17 +151,9 @@ export async function getGuildInfo(guild: import("discord.js").Guild) {
     };
 }
 
-/**
- *
- * @param {import("discord.js").EmbedBuilder} embed
- * @param {import("discord.js").ClientUser} user
- * @param {{url: string;file: {attachment: string;name: string;}}} pingColor
- * @param {Number} time
- * @returns
- */
 export function getReplyTemplate(
-    embed: import("discord.js").EmbedBuilder,
-    user: import("discord.js").ClientUser,
+    embed: EmbedBuilder,
+    user: ClientUser,
     pingColor: { url: string; file: { attachment: string; name: string } },
     time: number = -1
 ) {

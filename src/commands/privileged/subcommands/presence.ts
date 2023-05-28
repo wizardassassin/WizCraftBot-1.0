@@ -1,5 +1,9 @@
 import { getPingColor, getReplyTemplate } from "#utils/utils.js";
-import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    EmbedBuilder,
+    SlashCommandSubcommandBuilder,
+} from "discord.js";
 
 export const data = new SlashCommandSubcommandBuilder()
     .setName("presence")
@@ -7,13 +11,8 @@ export const data = new SlashCommandSubcommandBuilder()
     .addUserOption((option) =>
         option.setName("user").setDescription("User to get information about.")
     );
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
-export async function execute(
-    interaction: import("discord.js").ChatInputCommandInteraction
-) {
+
+export async function execute(interaction: ChatInputCommandInteraction) {
     const user = interaction.options.getUser("user") || interaction.user;
     const id = user.id;
     const db_user = await interaction.client.prisma.user.findUnique({

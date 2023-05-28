@@ -1,4 +1,8 @@
-import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    EmbedBuilder,
+    SlashCommandBuilder,
+} from "discord.js";
 
 // Green 884158152973615105
 // Yellow 884158153011376208
@@ -39,9 +43,7 @@ export const data = new SlashCommandBuilder()
                 )
                 .setRequired(true) // Temporary fix
     );
-export async function execute(
-    interaction: import("discord.js").ChatInputCommandInteraction
-) {
+export async function execute(interaction: ChatInputCommandInteraction) {
     let question = interaction.options.getString("question");
 
     if (question) {

@@ -25,10 +25,6 @@ export const data = new SlashCommandSubcommandBuilder()
         option.setName("url").setDescription("A url to save (none to delete).")
     );
 
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
 export async function execute(interaction: ModifiedInteraction) {
     const slot = interaction.options.getInteger("slot") ?? -1;
     const unparsedURL = interaction.options.getString("url") ?? "";

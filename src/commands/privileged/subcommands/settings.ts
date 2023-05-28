@@ -1,4 +1,7 @@
-import { SlashCommandSubcommandBuilder } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    SlashCommandSubcommandBuilder,
+} from "discord.js";
 
 export const data = new SlashCommandSubcommandBuilder()
     .setName("settings")
@@ -14,13 +17,8 @@ export const data = new SlashCommandSubcommandBuilder()
             )
             .setRequired(true)
     );
-/**
- *
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
- */
-export async function execute(
-    interaction: import("discord.js").ChatInputCommandInteraction
-) {
+
+export async function execute(interaction: ChatInputCommandInteraction) {
     const id = interaction.user.id;
     const guildId = interaction.guildId;
     const action = interaction.options.getString("action") || "delete";

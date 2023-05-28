@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 
 export const data = new SlashCommandBuilder()
     .setName("tictactoe")
@@ -18,9 +18,7 @@ export const data = new SlashCommandBuilder()
                 { name: "impossible", value: "impossible" }
             )
     );
-export async function execute(
-    interaction: import("discord.js").ChatInputCommandInteraction
-) {
+export async function execute(interaction: ChatInputCommandInteraction) {
     const opponent = interaction.options.getUser("opponent") || ""; // Should I really call the user object for the bot?
     const difficulty = interaction.options.getString("difficulty") || "medium";
     if (!opponent || opponent.bot) {
