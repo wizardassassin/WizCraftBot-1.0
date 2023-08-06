@@ -127,7 +127,7 @@ const formatOptions = {
     quality: "highestaudio",
     highWaterMark: 1 << 25, // solution?
     dlChunkSize: 1 << 30, // solution?
-};
+} as ytdl.downloadOptions;
 
 function createQueue(interaction: ModifiedInteraction, firstSongs: any[]) {
     const voiceChannel = interaction.member.voice.channel;

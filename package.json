@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "clean": "rm -rf ./dist/",
+    "clean": "rm -rf ./dist/ && npm prune",
     "start": "pm2 start ecosystem.config.cjs",
     "stop": "pm2 stop ecosystem.config.cjs",
     "deploy-cmd": "node ./dist/deploy-commands.js",
@@ -26,6 +26,7 @@
     "@discordjs/rest": "^2.0.0",
     "@discordjs/voice": "^0.16.0",
     "@distube/ytdl-core": "^4.11.17",
+    "@distube/ytsr": "^1.1.9",
     "@prisma/client": "^5.1.1",
     "bufferutil": "^4.0.7",
     "discord.js": "^14.12.1",

@@ -2,7 +2,8 @@ import { secondsToTimestamp } from "#utils/utils.js";
 import { SlashCommandSubcommandBuilder } from "discord.js";
 import ytdl from "ytdl-core";
 import ytpl from "ytpl";
-import ytsr from "ytsr";
+// import ytsr from "ytsr";
+import ytsr from "@distube/ytsr";
 import { ModifiedInteraction } from "../music.js";
 import { Video } from "ytsr";
 
@@ -94,6 +95,7 @@ export async function execute(interaction: ModifiedInteraction) {
 
         tempQueue.push(videoInfo);
     } else {
+        /*
         const searchURL = (await ytsr.getFilters(unparsedSearch))
             .get("Type")
             .get("Video").url;
@@ -116,6 +118,19 @@ export async function execute(interaction: ModifiedInteraction) {
             author: { url: channelUrl, name: channel },
             duration,
         } = searchResults.items[0] as Video;
+        */
+        const result = await ytsr(unparsedSearch, {
+            safeSearch: true,
+            limit: 1,
+            type: "video",
+        });
+        const {
+            name: title,
+            url,
+            thumbnail,
+            duration,
+            author: { url: channelUrl, name: channel },
+        } = result.items[0];
         const videoInfo = {
             title,
             url,
