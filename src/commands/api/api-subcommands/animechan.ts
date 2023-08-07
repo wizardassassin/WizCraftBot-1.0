@@ -27,7 +27,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     const timer = new Timer();
     timer.start();
-    const res = await fetch("https://animechan.vercel.app/api/random");
+    const res = await fetch("https://animechan.xyz/api/random");
     const json: any = await res.json(); // TODO: typedef?
     timer.stop();
     const time = timer.duration();
