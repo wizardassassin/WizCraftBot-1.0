@@ -28,7 +28,7 @@ export async function execute(interaction: ModifiedInteraction) {
     // ytdl.validateURL(unparsedSearch)
 
     const tag = interaction.user.tag;
-    const nickname = interaction.member.nickname || interaction.user.username;
+    const displayName = interaction.member.displayName;
     const id = interaction.user.id;
 
     const tempQueue = [];
@@ -71,7 +71,7 @@ export async function execute(interaction: ModifiedInteraction) {
                 duration,
                 channel,
                 channelUrl,
-                nickname,
+                displayName,
                 tag,
             };
         });
@@ -89,7 +89,7 @@ export async function execute(interaction: ModifiedInteraction) {
             ),
             channel: info.videoDetails.ownerChannelName,
             channelUrl: info.videoDetails.ownerProfileUrl,
-            nickname,
+            displayName,
             tag,
         };
 
@@ -138,7 +138,7 @@ export async function execute(interaction: ModifiedInteraction) {
             duration,
             channel,
             channelUrl,
-            nickname,
+            displayName,
             tag,
         };
         tempQueue.push(videoInfo);

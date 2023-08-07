@@ -99,7 +99,7 @@ function createEmbed(
         .setTitle("Queue for " + interaction.guild.name)
         .addFields({
             name: "Now Playing:",
-            value: `[${currentSong.title}](${currentSong.url}) | \`${currentSong.duration} Requested by: ${currentSong.nickname} (${currentSong.tag})\``,
+            value: `[${currentSong.title}](${currentSong.url}) | \`${currentSong.duration} Requested by: ${currentSong.displayName}\``,
         })
         .setTimestamp()
         .setFooter({
@@ -115,9 +115,9 @@ function createEmbed(
                         acc +
                         `\`${i + startIndex}.\` [${cur.title}](${
                             cur.url
-                        }) | \`${cur.duration} Requested by: ${cur.nickname} (${
-                            cur.tag
-                        })\`\n\n`,
+                        }) | \`${cur.duration} Requested by: ${
+                            cur.displayName
+                        }\`\n\n`,
                     ""
                 )
                 .trim(),
@@ -133,8 +133,8 @@ function createEmbed(
                             `\`${i + endIndex1}.\` [${cur.title}](${
                                 cur.url
                             }) | \`${cur.duration} Requested by: ${
-                                cur.nickname
-                            } (${cur.tag})\`\n\n`,
+                                cur.displayName
+                            }\`\n\n`,
                         ""
                     )
                     .trim(),
