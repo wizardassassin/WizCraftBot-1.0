@@ -7,7 +7,7 @@ import {
     StringSelectMenuOptionBuilder,
 } from "discord.js";
 import { createCanvas, loadImage } from "canvas";
-import { Chess, PieceSymbol, Color } from "chess.js";
+import { Chess, PieceSymbol, Color, Square } from "chess.js";
 
 export const data = new SlashCommandBuilder()
     .setName("chess")
@@ -31,6 +31,8 @@ const images = [
     "Chess_rdt80.png",
     "Chess_rlt80.png",
 ].map((x) => `${imageDir}${x}`);
+
+const fontPath = `${imageDir}NotoSans-Regular.ttf`;
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply();
@@ -78,6 +80,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         const numbers = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
         if (reverseBoard) {
+            board.forEach((x) => x.reverse());
             board.reverse();
             letters.reverse();
             numbers.reverse();
@@ -97,7 +100,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
             isLight = !isLight;
         }
 
-        ctx.font = "bold 20px 'Noto Sans'";
+        ctx.font = 'bold 20px "Noto Sans"';
 
         const hexLight = "#ffce9e";
         const hexDark = "#d28c45";
@@ -130,20 +133,79 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         return canvas.toBuffer("image/png");
     };
 
-    const createRow = () => {
-        const moves = chess
-            .moves()
-            .map((x) =>
-                new StringSelectMenuOptionBuilder().setLabel(x).setValue(x)
-            );
+    const toPiece = (piece: PieceSymbol) => {
+        switch (piece) {
+            case "b":
+                return "Bishop";
+            case "p":
+                return "Pawn";
+            case "n":
+                return "Knight";
+            case "r":
+                return "Rook";
+            case "q":
+                return "Queen";
+            case "k":
+                return "King";
+        }
+    };
+
+    const createPieceRow = (cache: string = null) => {
+        const moves = chess.moves({ verbose: true });
+        const squares = new Set<string>();
+
+        const pieces = moves
+            .filter((x) => {
+                if (squares.has(x.from)) return false;
+                squares.add(x.from);
+                return true;
+            })
+            .map((x) => {
+                const squareName = x.from;
+                const pieceName = toPiece(x.piece);
+                const option = new StringSelectMenuOptionBuilder()
+                    .setLabel(`${pieceName} (${squareName})`)
+                    .setValue(squareName);
+                if (cache === squareName) option.setDefault(true);
+                return option;
+            });
         const selectMenu = new StringSelectMenuBuilder()
-            .setCustomId("move")
-            .setPlaceholder("Make a move!")
-            .addOptions(...moves);
+            .setCustomId("piece")
+            .setPlaceholder("Choose a piece!")
+            .addOptions(...pieces);
         const row =
             new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
                 selectMenu
             );
+        return row;
+    };
+
+    const createMoveRow = (square: string = null) => {
+        const selectMenu = new StringSelectMenuBuilder()
+            .setCustomId("move")
+            .setPlaceholder("Make a move!");
+        const row =
+            new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+                selectMenu
+            );
+        if (!square) {
+            selectMenu
+                .addOptions(
+                    new StringSelectMenuOptionBuilder()
+                        .setLabel("NULL")
+                        .setValue("NULL")
+                )
+                .setDisabled(true);
+            return row;
+        }
+        const moves = chess.moves({ verbose: true, square: square as Square });
+        selectMenu.addOptions(
+            ...moves.map((x) =>
+                new StringSelectMenuOptionBuilder()
+                    .setLabel(`${x.to} (${x.san})`)
+                    .setValue(x.san)
+            )
+        );
         return row;
     };
 
@@ -157,18 +219,51 @@ export async function execute(interaction: ChatInputCommandInteraction) {
                 attachment: getBoardImage(reverseBoard),
             },
         ],
-        components: [createRow()],
+        components: [createPieceRow(), createMoveRow()],
     });
 
     interaction.client.componentCollectors.set(reply.id, interaction.user.id);
 
     const collector = reply.createMessageComponentCollector({
         filter: (i) => i.user.id === interaction.user.id,
-        idle: 60000,
+        idle: 60000 * 2,
     });
 
     collector.on("collect", async (res: StringSelectMenuInteraction) => {
+        if (res.customId === "piece") {
+            await res.update({
+                content: "",
+                components: [
+                    createPieceRow(res.values[0]),
+                    createMoveRow(res.values[0]),
+                ],
+            });
+        }
+        if (res.customId !== "move") return;
         chess.move(res.values[0]);
+        if (chess.isGameOver()) {
+            const winMessage = chess.isDraw()
+                ? "Draw!"
+                : chess.turn() === "b"
+                ? "White Wins!"
+                : "Black Wins!";
+            await res.update({
+                content: winMessage,
+                files: [
+                    {
+                        name: "board.png",
+                        attachment: getBoardImage(reverseBoard),
+                    },
+                    {
+                        name: "pgn.txt",
+                        attachment: Buffer.from(chess.pgn()),
+                    },
+                ],
+                components: [],
+            });
+            collector.stop();
+            return;
+        }
         reverseBoard = !reverseBoard;
         await res.update({
             content: "",
@@ -178,7 +273,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
                     attachment: getBoardImage(reverseBoard),
                 },
             ],
-            components: [createRow()],
+            components: [createPieceRow(), createMoveRow()],
         });
     });
 
