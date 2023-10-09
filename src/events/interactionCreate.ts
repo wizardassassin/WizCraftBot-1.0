@@ -48,8 +48,8 @@ export async function execute(interaction: Interaction) {
                 ephemeral: true,
             });
         } else if (
-            client.componentCollectors.get(interaction.message.id) ??
-            interaction.user.id !== interaction.user.id
+            (client.componentCollectors.get(interaction.message.id) ??
+                interaction.user.id) !== interaction.user.id
         ) {
             console.log("User Specific Message Component");
             interaction.reply({
