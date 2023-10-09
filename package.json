@@ -23,27 +23,29 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.9.0",
-    "@discordjs/rest": "^2.0.0",
+    "@discordjs/rest": "^2.0.1",
     "@discordjs/voice": "^0.16.0",
-    "@distube/ytdl-core": "^4.11.17",
-    "@distube/ytsr": "^1.1.9",
-    "@prisma/client": "^5.1.1",
+    "@distube/ytdl-core": "^4.13.2",
+    "@distube/ytsr": "^1.2.0",
+    "@prisma/client": "^5.4.1",
     "bufferutil": "^4.0.7",
-    "discord.js": "^14.12.1",
+    "canvas": "^2.11.2",
+    "chess.js": "^1.0.0-beta.6",
+    "discord.js": "^14.13.0",
     "dotenv": "^16.3.1",
     "erlpack": "github:discord/erlpack",
-    "ffmpeg-static": "^5.1.0",
+    "ffmpeg-static": "^5.2.0",
     "lodash": "^4.17.21",
     "minecraft-server-util": "^5.4.2",
     "node-fetch": "^3.3.2",
-    "node-html-parser": "^6.1.5",
+    "node-html-parser": "^6.1.10",
     "simple-oauth2": "^5.0.0",
     "sodium-native": "^4.0.4",
-    "typescript": "^5.1.6",
+    "typescript": "^5.2.2",
     "utf-8-validate": "^6.0.3",
     "ytdl-core": "^4.11.5",
     "ytpl": "^2.3.0",
-    "ytsr": "^3.8.2",
+    "ytsr": "^3.8.4",
     "zlib-sync": "^0.1.8"
   },
   "repository": {
@@ -66,6 +68,6 @@
   },
   "homepage": "https://github.com/wizardassassin/WizCraftBot-1.0#readme",
   "devDependencies": {
-    "prisma": "^5.1.1"
+    "prisma": "^5.4.1"
   }
 }
