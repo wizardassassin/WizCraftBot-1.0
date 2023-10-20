@@ -27,8 +27,8 @@
     "@discordjs/voice": "^0.16.0",
     "@distube/ytdl-core": "^4.13.2",
     "@distube/ytsr": "^1.2.0",
-    "@prisma/client": "^5.4.1",
-    "bufferutil": "^4.0.7",
+    "@prisma/client": "^5.4.2",
+    "bufferutil": "^4.0.8",
     "canvas": "^2.11.2",
     "chess.js": "^1.0.0-beta.6",
     "discord.js": "^14.13.0",
@@ -68,6 +68,6 @@
   },
   "homepage": "https://github.com/wizardassassin/WizCraftBot-1.0#readme",
   "devDependencies": {
-    "prisma": "^5.4.1"
+    "prisma": "^5.4.2"
   }
 }
