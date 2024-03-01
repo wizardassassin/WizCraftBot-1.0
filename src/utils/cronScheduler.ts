@@ -139,7 +139,8 @@ export class CronScheduler {
             return;
         }
         this.#jobs.forEach((x) => {
-            x.setClient(this.#client);
+            if (this.#client.isReady()) x.setClient(this.#client);
+            else console.error("Client isn't ready!"); // client should be ready
             x.start();
         });
     }
