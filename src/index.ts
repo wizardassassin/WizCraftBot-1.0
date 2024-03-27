@@ -32,12 +32,14 @@ clientIntents.add(
     IntentsBitField.Flags.GuildPresences
 );
 
+const clientPresence = {
+    activities: [{ name: "Minecraft", type: ActivityType.Competing }],
+    status: "online",
+} as PresenceData;
+
 const client = new Client({
     intents: clientIntents,
-    presence: {
-        activities: [{ name: "Minecraft", type: ActivityType.Competing }],
-        status: "online",
-    },
+    presence: clientPresence,
 });
 
 // Imports database
@@ -82,10 +84,7 @@ client.componentCollectors = new Collection<string, string>();
 
 client.storage = new Collection();
 
-client.storage.set("presence", {
-    activities: [{ name: "Minecraft", type: ActivityType.Competing }],
-    status: "online",
-} as PresenceData);
+client.storage.set("presence", clientPresence);
 
 client.cronScheduler = new CronScheduler(client);
 
