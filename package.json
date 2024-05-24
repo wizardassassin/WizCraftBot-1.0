@@ -13,7 +13,7 @@
     "deploy-prisma": "prisma migrate deploy && prisma migrate generate",
     "test": "cd ./dist/ && node .",
     "update": "npm stop && git pull && npm run build2 && npm start",
-    "build2": "npm ci && npm run clean && npm run build && npm run deploy-cmd && npm run deploy-prisma"
+    "build2": "npm run clean && npm ci && npm run build && npm run deploy-cmd && npm run deploy-prisma"
   },
   "author": "wizardassassin",
   "license": "MIT",
