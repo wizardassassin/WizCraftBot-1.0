@@ -6,11 +6,11 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "clean": "rm -rf ./dist/ ./node_modules/ && npm prune",
+    "clean": "rm -rf ./dist/ ./node_modules/",
     "start": "pm2 start ecosystem.config.cjs",
     "stop": "pm2 stop ecosystem.config.cjs",
     "deploy-cmd": "node ./dist/deploy-commands.js",
-    "deploy-prisma": "prisma migrate deploy && prisma migrate generate",
+    "deploy-prisma": "prisma migrate deploy && prisma generate",
     "test": "cd ./dist/ && node .",
     "update": "npm stop && git pull && npm run build2 && npm start",
     "build2": "npm run clean && npm ci && npm run build && npm run deploy-cmd && npm run deploy-prisma"
