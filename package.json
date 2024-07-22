@@ -25,13 +25,13 @@
     "@discordjs/opus": "^0.9.0",
     "@discordjs/rest": "^2.3.0",
     "@discordjs/voice": "^0.17.0",
-    "@distube/ytdl-core": "^4.13.3",
-    "@distube/ytsr": "^2.0.0",
-    "@prisma/client": "^5.14.0",
+    "@distube/ytdl-core": "^4.13.5",
+    "@distube/ytsr": "^2.0.4",
+    "@prisma/client": "^5.17.0",
     "bufferutil": "^4.0.8",
     "canvas": "^2.11.2",
     "chess.js": "^1.0.0-beta.8",
-    "discord.js": "^14.15.2",
+    "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
     "erlpack": "github:discord/erlpack",
     "ffmpeg-static": "^5.2.0",
@@ -39,9 +39,9 @@
     "minecraft-server-util": "^5.4.2",
     "node-fetch": "^3.3.2",
     "node-html-parser": "^6.1.13",
-    "simple-oauth2": "^5.0.0",
+    "simple-oauth2": "^5.1.0",
     "sodium-native": "^4.1.1",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.3",
     "utf-8-validate": "^6.0.4",
     "ytdl-core": "^4.11.5",
     "ytpl": "^2.3.0",
@@ -68,11 +68,6 @@
   },
   "homepage": "https://github.com/wizardassassin/WizCraftBot-1.0#readme",
   "devDependencies": {
-    "prisma": "^5.14.0"
-  },
-  "overrides": {
-    "@distube/ytsr": {
-      "undici": "^6.18.1"
-    }
+    "prisma": "^5.17.0"
   }
 }
