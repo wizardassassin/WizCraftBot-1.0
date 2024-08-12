@@ -10,7 +10,7 @@
     "start": "pm2 start ecosystem.config.cjs",
     "stop": "pm2 stop ecosystem.config.cjs",
     "deploy-cmd": "node ./dist/deploy-commands.js",
-    "deploy-prisma": "prisma migrate deploy && prisma generate",
+    "deploy-prisma": "prisma generate && prisma migrate deploy",
     "test": "cd ./dist/ && node .",
     "update": "npm stop && git pull && npm run build2 && npm start",
     "build2": "npm run clean && npm ci && npm run build && npm run deploy-cmd && npm run deploy-prisma"
@@ -25,9 +25,9 @@
     "@discordjs/opus": "^0.9.0",
     "@discordjs/rest": "^2.3.0",
     "@discordjs/voice": "^0.17.0",
-    "@distube/ytdl-core": "^4.13.5",
+    "@distube/ytdl-core": "^4.14.4",
     "@distube/ytsr": "^2.0.4",
-    "@prisma/client": "^5.17.0",
+    "@prisma/client": "^5.18.0",
     "bufferutil": "^4.0.8",
     "canvas": "^2.11.2",
     "chess.js": "^1.0.0-beta.8",
@@ -41,7 +41,7 @@
     "node-html-parser": "^6.1.13",
     "simple-oauth2": "^5.1.0",
     "sodium-native": "^4.1.1",
-    "typescript": "^5.5.3",
+    "typescript": "^5.5.4",
     "utf-8-validate": "^6.0.4",
     "ytdl-core": "^4.11.5",
     "ytpl": "^2.3.0",
@@ -68,6 +68,6 @@
   },
   "homepage": "https://github.com/wizardassassin/WizCraftBot-1.0#readme",
   "devDependencies": {
-    "prisma": "^5.17.0"
+    "prisma": "^5.18.0"
   }
 }

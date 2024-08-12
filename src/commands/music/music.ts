@@ -125,8 +125,8 @@ export async function execute(interaction: ModifiedInteraction) {
 const formatOptions = {
     filter: (format: ytdl.videoFormat) => !format.hasVideo && format.hasAudio,
     quality: "highestaudio",
-    highWaterMark: 1 << 25, // solution?
-    dlChunkSize: 1 << 30, // solution?
+    // highWaterMark: 1 << 25, // solution?
+    // dlChunkSize: 1 << 30, // solution?
 } as ytdl.downloadOptions;
 
 function createQueue(interaction: ModifiedInteraction, firstSongs: any[]) {
