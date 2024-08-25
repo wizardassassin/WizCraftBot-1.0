@@ -122,10 +122,11 @@ export async function execute(interaction: ModifiedInteraction) {
     }
 }
 
+// eats the entire video buffer into memory
 const formatOptions = {
     filter: (format: ytdl.videoFormat) => !format.hasVideo && format.hasAudio,
     quality: "highestaudio",
-    // highWaterMark: 1 << 25, // solution?
+    highWaterMark: 1 << 25, // solution?
     // dlChunkSize: 1 << 30, // solution?
 } as ytdl.downloadOptions;
 
