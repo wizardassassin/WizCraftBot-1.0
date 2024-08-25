@@ -33,14 +33,17 @@ nano .env # edit the file
 Compile the code
 
 ```bash
-npx tsc
+# npx tsc
+npm run build
 ```
 
 Deploy the commands and database
 
 ```bash
-node ./dist/deploy-commands.js
-npx prisma migrate deploy
+# node ./dist/deploy-commands.js
+npm run deploy-cmd
+# prisma generate && prisma migrate deploy
+npm run deploy-prisma
 ```
 
 Run the code using pm2 or in the terminal
@@ -48,8 +51,7 @@ Run the code using pm2 or in the terminal
 ```bash
 pm2 start ecosystem.config.cjs
 # or
-cd ./dist/
-node .
+npm run dev # cd ./dist/ && node .
 ```
 
 # TODO
