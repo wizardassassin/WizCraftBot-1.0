@@ -1,6 +1,7 @@
 import { getPingColor, getReplyTemplate, URLWrapper } from "#utils/utils.js";
 import { EmbedBuilder, SlashCommandSubcommandBuilder } from "discord.js";
-import ytdl from "ytdl-core";
+// import ytdl from "ytdl-core";
+import ytdl from "@distube/ytdl-core";
 import ytpl from "ytpl";
 import { ModifiedInteraction } from "../music.js";
 

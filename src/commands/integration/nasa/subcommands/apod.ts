@@ -6,7 +6,8 @@ import {
 import fetch from "node-fetch";
 import { getPingColor, URLWrapper } from "#utils/utils.js";
 import { Timer } from "#utils/timer.js";
-import ytdl from "ytdl-core";
+// import ytdl from "ytdl-core";
+import ytdl from "@distube/ytdl-core";
 
 const data = new SlashCommandSubcommandBuilder()
     .setName("apod")

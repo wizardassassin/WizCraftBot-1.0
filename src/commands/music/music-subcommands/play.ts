@@ -1,11 +1,11 @@
 import { secondsToTimestamp } from "#utils/utils.js";
 import { SlashCommandSubcommandBuilder } from "discord.js";
-import ytdl from "ytdl-core";
+// import ytdl from "ytdl-core";
+import ytdl from "@distube/ytdl-core";
 import ytpl from "ytpl";
 // import ytsr from "ytsr";
 import ytsr from "@distube/ytsr";
 import { ModifiedInteraction } from "../music.js";
-import { Video } from "ytsr";
 
 export const data = new SlashCommandSubcommandBuilder()
     .setName("play")
